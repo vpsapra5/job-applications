@@ -1,8 +1,15 @@
-// app.js - Simplified Daily 10 Applications Controller (5 India & 5 US)
+// app.js - Simplified Daily 10 Applications & AI Interview Prep Coach Controller
 
 let dailyJobs = [];
 let activeFilter = 'all';
 let pollTimer = null;
+
+// Coach State
+let coachJobs = [];
+let currentCoachJob = null;
+let currentDossier = null;
+let speechRecognizer = null;
+let isListening = false;
 
 // Elements
 const elHeroDate = document.getElementById('hero-date');
@@ -15,6 +22,14 @@ const elProgressFill = document.getElementById('progress-fill');
 const elProgressStatusText = document.getElementById('progress-status-text');
 const elProgressPct = document.getElementById('progress-percentage');
 const elProgressLog = document.getElementById('progress-log');
+
+// Navigation Elements
+const elNavBtnApps = document.getElementById('nav-btn-apps');
+const elNavBtnCoach = document.getElementById('nav-btn-coach');
+const elViewApps = document.getElementById('view-applications');
+const elViewCoach = document.getElementById('view-coach');
+const elNavBadgeApps = document.getElementById('nav-badge-apps');
+const elNavBadgeCoach = document.getElementById('nav-badge-coach');
 
 // Stats Elements
 const elStatTotal = document.getElementById('stat-total');
@@ -42,13 +57,55 @@ const elBtnModalDismiss = document.getElementById('btn-modal-dismiss');
 // Archive
 const elArchiveBody = document.getElementById('archive-body');
 
-// Initialize
+// Coach View Elements
+const elCoachJobSelect = document.getElementById('coach-job-select');
+const elCoachRolesCount = document.getElementById('coach-roles-count');
+const elCoachRolesList = document.getElementById('coach-roles-list');
+const elCoachSearchInput = document.getElementById('coach-search-input');
+
+// Coach Active Card
+const elCoachCompanyPill = document.getElementById('coach-company-pill');
+const elCoachRegionPill = document.getElementById('coach-region-pill');
+const elCoachRoleTitle = document.getElementById('coach-role-title');
+const elCoachMetaLine = document.getElementById('coach-meta-line');
+const elCoachBtnViewJd = document.getElementById('coach-btn-view-jd');
+const elCoachBtnViewLinkedIn = document.getElementById('coach-btn-view-linkedin');
+
+// Coach Pillars
+const elCoachCultureText = document.getElementById('coach-culture-text');
+const elCoachRoundsContainer = document.getElementById('coach-rounds-container');
+const elCoachPitchText = document.getElementById('coach-pitch-text');
+const elBtnCopyPitch = document.getElementById('btn-copy-pitch');
+const elBtnSpeakPitch = document.getElementById('btn-speak-pitch');
+const elCoachTechQuestionsList = document.getElementById('coach-tech-questions-list');
+const elCoachStarStoriesList = document.getElementById('coach-star-stories-list');
+const elCoachReverseQuestionsList = document.getElementById('coach-reverse-questions-list');
+
+// Mock Room Elements
+const elMockActiveQuestion = document.getElementById('mock-active-question');
+const elMockQuestionDropdown = document.getElementById('mock-question-dropdown');
+const elMockUserAnswer = document.getElementById('mock-user-answer');
+const elBtnMockVoice = document.getElementById('btn-mock-voice');
+const elVoiceStatusText = document.getElementById('voice-status-text');
+const elBtnSubmitCritique = document.getElementById('btn-submit-critique');
+const elMockFeedbackBox = document.getElementById('mock-feedback-box');
+const elFeedbackScoreNum = document.getElementById('feedback-score-num');
+const elFeedbackVerdict = document.getElementById('feedback-verdict');
+const elFeedbackTip = document.getElementById('feedback-tip');
+const elFeedbackStrengthsList = document.getElementById('feedback-strengths-list');
+const elFeedbackGapsList = document.getElementById('feedback-gaps-list');
+const elFeedbackElevatedAnswer = document.getElementById('feedback-elevated-answer');
+
+// ==================== INITIALIZATION ====================
 window.addEventListener('DOMContentLoaded', () => {
   formatDateHeader();
+  setupNavigation();
   checkStatus();
   loadDailyJobs();
   loadArchiveHistory();
   setupTabs();
+  setupCoachPillars();
+  setupVoiceRecognition();
   requestBrowserNotificationPermission();
 });
 
@@ -56,6 +113,27 @@ function formatDateHeader() {
   const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
   const today = new Date().toLocaleDateString('en-US', options);
   elHeroDate.textContent = `Daily Drop: ${today}`;
+}
+
+// Navigation between Daily Applications and Coach View
+function setupNavigation() {
+  elNavBtnApps.addEventListener('click', () => switchView('applications'));
+  elNavBtnCoach.addEventListener('click', () => switchView('coach'));
+}
+
+function switchView(viewName) {
+  if (viewName === 'applications') {
+    elNavBtnApps.classList.add('active');
+    elNavBtnCoach.classList.remove('active');
+    elViewApps.style.display = 'block';
+    elViewCoach.style.display = 'none';
+  } else if (viewName === 'coach') {
+    elNavBtnCoach.classList.add('active');
+    elNavBtnApps.classList.remove('active');
+    elViewApps.style.display = 'none';
+    elViewCoach.style.display = 'block';
+    initCoachView();
+  }
 }
 
 async function requestBrowserNotificationPermission() {
@@ -79,13 +157,13 @@ async function checkStatus() {
   } catch (e) {}
 }
 
+// ==================== DAILY APPLICATIONS FEED ====================
 async function loadDailyJobs() {
   try {
     const res = await fetch('/api/daily');
     const data = await res.json();
     dailyJobs = data.jobs || [];
 
-    // If no jobs exist for today, automatically trigger initial scan
     if (dailyJobs.length === 0) {
       elJobsContainer.innerHTML = '';
       elEmptyState.style.display = 'block';
@@ -96,8 +174,18 @@ async function loadDailyJobs() {
     elEmptyState.style.display = 'none';
     updateStats();
     renderJobsGrid();
+    updateNavBadges();
   } catch (err) {
     console.error('Error loading daily jobs:', err);
+  }
+}
+
+function updateNavBadges() {
+  if (elNavBadgeApps) elNavBadgeApps.textContent = dailyJobs.length;
+  // Count applied
+  const appliedCount = dailyJobs.filter(j => j.isApplied).length;
+  if (elNavBadgeCoach) {
+    elNavBadgeCoach.textContent = appliedCount > 0 ? `${appliedCount} Applied` : 'Prep Active';
   }
 }
 
@@ -198,15 +286,16 @@ function renderJobsGrid() {
       ${bridgedTags ? `<div class="bridged-gaps-row">${bridgedTags}</div>` : ''}
 
       <div class="card-actions">
+        <button class="btn-action btn-prep-coach" onclick="jumpToCoachForJob('${job.id}')" title="Prepare for this interview with AI Coach">
+          🎯 Prep Interview
+        </button>
         <a href="${job.sourceUrl}" target="_blank" class="btn-action btn-apply" title="Open job posting on LinkedIn">
-          Apply on LinkedIn ↗
+          Apply ↗
         </a>
         <a href="${job.pdfUrl}" target="_blank" class="btn-action btn-pdf" title="Download tailored 2-page ATS PDF">
-          <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"></path></svg>
           PDF
         </a>
         <a href="${job.docxUrl}" class="btn-action btn-docx" title="Download tailored Word document">
-          <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6M16 13H8M16 17H8M10 9H8"></path></svg>
           DOCX
         </a>
         <button class="btn-action btn-view-jd" onclick="openJdModalById('${job.id}')" title="Read full job description">
@@ -219,6 +308,25 @@ function renderJobsGrid() {
     elJobsContainer.appendChild(card);
   });
 }
+
+// Jump straight to Coach for a specific role
+window.jumpToCoachForJob = function(jobId) {
+  const job = dailyJobs.find(j => j.id === jobId);
+  switchView('coach');
+  if (job) {
+    const formatted = {
+      JobId: job.id,
+      Company: job.company,
+      Title: job.title,
+      Location: job.location,
+      AtsMatchScore: `${job.matchScore || 99}%`,
+      PrimaryTrack: job.region === 'India' ? 'India Track' : 'US Track',
+      JobUrl: job.sourceUrl,
+      Description: job.description
+    };
+    selectCoachRole(formatted);
+  }
+};
 
 // Mark as applied action
 window.markAsApplied = async function(jobId) {
@@ -245,24 +353,88 @@ window.markAsApplied = async function(jobId) {
     job.isApplied = true;
     updateStats();
     renderJobsGrid();
+    updateNavBadges();
 
-    // Show temporary celebratory alert
     showToast(`✓ Marked application submitted for ${job.company}!`);
   } catch (err) {
     alert('Error marking as applied: ' + err.message);
   }
 };
 
+// Refresh Today's 10 Jobs
+elBtnRefresh.addEventListener('click', async () => {
+  if (!confirm("Refresh today's 10 LinkedIn applications? This will run a fresh scan for India & US feeds.")) return;
+
+  elProgressContainer.style.display = 'block';
+  elProgressFill.style.width = '10%';
+  elProgressStatusText.textContent = 'Contacting LinkedIn feeds for fresh roles...';
+  elProgressPct.textContent = '10%';
+  elProgressLog.textContent = 'Querying guest endpoints with f_TPR=r86400 & company filters...';
+
+  try {
+    await fetch('/api/daily/refresh', { method: 'POST' });
+    pollRefreshProgress();
+  } catch (err) {
+    alert('Error starting refresh: ' + err.message);
+    elProgressContainer.style.display = 'none';
+  }
+});
+
+function pollRefreshProgress() {
+  if (pollTimer) clearInterval(pollTimer);
+  let pollAttempts = 0;
+
+  pollTimer = setInterval(async () => {
+    pollAttempts++;
+    try {
+      const res = await fetch('/api/progress');
+      const data = await res.json();
+
+      elProgressFill.style.width = `${data.percentage}%`;
+      elProgressPct.textContent = `${data.percentage}%`;
+      elProgressStatusText.textContent = data.statusMessage || 'Processing...';
+      elProgressLog.textContent = data.latestLog || 'Working...';
+
+      if (data.isComplete || pollAttempts > 60) {
+        clearInterval(pollTimer);
+        setTimeout(() => {
+          elProgressContainer.style.display = 'none';
+          loadDailyJobs();
+          showToast("🎉 Daily 10 jobs refreshed and tailored!");
+        }, 1200);
+      }
+    } catch (e) {}
+  }, 2500);
+}
+
+// Test Notification button
+elBtnTestNotify.addEventListener('click', async () => {
+  try {
+    const res = await fetch('/api/notify-test', { method: 'POST' });
+    const data = await res.json();
+    showToast("🔔 8:00 PM alert test triggered! (Check Windows notifications)");
+
+    if ('Notification' in window && Notification.permission === 'granted') {
+      new Notification("Resume Tailor Studio", {
+        body: "🎯 Daily 10 Applications Ready (5 India & 5 US)! Apply with tailored resumes.",
+        icon: "/files/favicon.ico"
+      });
+    }
+  } catch (e) {
+    alert("Notification test failed: " + e.message);
+  }
+});
+
 // Modal functions
 window.openJdModalById = function(jobId) {
-  const job = dailyJobs.find(j => j.id === jobId);
+  const job = dailyJobs.find(j => j.id === jobId) || coachJobs.find(j => (j.JobId || j.id) === jobId);
   if (!job) return;
 
-  elModalRegion.textContent = job.region === 'India' ? '🇮🇳 India' : '🇺🇸 USA';
-  elModalCompany.textContent = job.company;
-  elModalTitle.textContent = job.title;
-  elModalDesc.textContent = job.description || 'No description available.';
-  elModalSourceLink.href = job.sourceUrl || '#';
+  elModalRegion.textContent = job.region === 'India' || job.PrimaryTrack === 'India Track' ? '🇮🇳 India' : '🇺🇸 USA';
+  elModalCompany.textContent = job.company || job.Company;
+  elModalTitle.textContent = job.title || job.Title;
+  elModalDesc.textContent = job.description || job.Description || 'No description available.';
+  elModalSourceLink.href = job.sourceUrl || job.JobUrl || '#';
   elJdModal.style.display = 'flex';
 };
 
@@ -274,70 +446,6 @@ elBtnCloseModal.addEventListener('click', closeJdModal);
 elBtnModalDismiss.addEventListener('click', closeJdModal);
 elJdModal.addEventListener('click', (e) => {
   if (e.target === elJdModal) closeJdModal();
-});
-
-// Refresh Today's 10 Jobs
-elBtnRefresh.addEventListener('click', async () => {
-  elBtnRefresh.disabled = true;
-  elProgressContainer.style.display = 'block';
-  elProgressFill.style.width = '10%';
-  elProgressPct.textContent = '10%';
-  elProgressStatusText.textContent = 'Scanning fresh corporate postings for India & USA...';
-  elProgressLog.textContent = 'Searching past 24 hours on LinkedIn guest feed...';
-
-  try {
-    const res = await fetch('/api/daily/refresh', { method: 'POST' });
-    startProgressPolling();
-  } catch (err) {
-    alert('Could not start refresh: ' + err.message);
-    elBtnRefresh.disabled = false;
-  }
-});
-
-function startProgressPolling() {
-  if (pollTimer) clearInterval(pollTimer);
-  pollTimer = setInterval(async () => {
-    try {
-      const res = await fetch('/api/progress');
-      const data = await res.json();
-
-      elProgressFill.style.width = `${data.percentage}%`;
-      elProgressPct.textContent = `${data.percentage}%`;
-      elProgressStatusText.textContent = data.statusMessage || 'Processing...';
-      elProgressLog.textContent = data.latestLog || 'Synthesizing tailored resumes...';
-
-      if (data.isComplete) {
-        clearInterval(pollTimer);
-        elBtnRefresh.disabled = false;
-        elProgressContainer.style.display = 'none';
-        showToast('🎯 10 Daily Applications Refreshed & Tailored!');
-        await loadDailyJobs();
-        loadArchiveHistory();
-        elJobsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    } catch (e) {}
-  }, 1000);
-}
-
-// Test Notification Button
-elBtnTestNotify.addEventListener('click', async () => {
-  try {
-    elBtnTestNotify.textContent = 'Sending...';
-    await fetch('/api/notify-test', { method: 'POST' });
-    elBtnTestNotify.textContent = '🔔 Notification Sent!';
-    setTimeout(() => { elBtnTestNotify.textContent = '🔔 Test 8 PM Notification'; }, 3000);
-
-    // Browser Notification fallback
-    if ('Notification' in window && Notification.permission === 'granted') {
-      new Notification('Resume Tailor Studio', {
-        body: '🎯 10 Daily Curated Jobs Ready (5 India & 5 US)! Click to apply.',
-        icon: 'favicon.ico'
-      });
-    }
-    showToast('Windows Action Center alert triggered!');
-  } catch (err) {
-    alert('Could not trigger notification: ' + err.message);
-  }
 });
 
 // Archive History
@@ -382,7 +490,428 @@ async function loadArchiveHistory() {
   } catch (e) {}
 }
 
-// Simple toast notification popup
+
+// ==================== INTERVIEW PREP COACH CONTROLLER ====================
+
+let coachInitialized = false;
+
+async function initCoachView() {
+  if (coachInitialized && coachJobs.length > 0) return;
+  await loadCoachJobs();
+  coachInitialized = true;
+}
+
+async function loadCoachJobs() {
+  try {
+    const res = await fetch('/api/interview/jobs');
+    const data = await res.json();
+    coachJobs = data.jobs || [];
+
+    elCoachRolesCount.textContent = coachJobs.length;
+    renderCoachRolesList(coachJobs);
+    populateCoachDropdown(coachJobs);
+
+    // Auto-select first role
+    if (coachJobs.length > 0 && !currentCoachJob) {
+      selectCoachRole(coachJobs[0]);
+    }
+  } catch (err) {
+    console.error('Error loading coach jobs:', err);
+  }
+}
+
+function populateCoachDropdown(jobs) {
+  elCoachJobSelect.innerHTML = '<option value="">-- Choose Applied Role --</option>';
+  jobs.forEach((job, idx) => {
+    const opt = document.createElement('option');
+    opt.value = job.JobId || job.id || idx;
+    opt.textContent = `${job.Company} - ${job.Title} (${job.Status || 'Applied'})`;
+    elCoachJobSelect.appendChild(opt);
+  });
+
+  elCoachJobSelect.addEventListener('change', (e) => {
+    const selectedId = e.target.value;
+    const found = coachJobs.find(j => (j.JobId || j.id) == selectedId);
+    if (found) selectCoachRole(found);
+  });
+}
+
+function renderCoachRolesList(jobs) {
+  elCoachRolesList.innerHTML = '';
+  if (jobs.length === 0) {
+    elCoachRolesList.innerHTML = '<div style="padding:12px; color:var(--text-muted); font-size:0.85rem;">No applied roles found.</div>';
+    return;
+  }
+
+  jobs.forEach(job => {
+    const item = document.createElement('div');
+    item.className = 'coach-role-item';
+    if (currentCoachJob && (currentCoachJob.JobId === job.JobId || currentCoachJob.JobId === job.id)) {
+      item.classList.add('active');
+    }
+
+    const appliedLabel = job.Status === 'Applied' ? '✅ Applied' : '🎯 Curated';
+
+    item.innerHTML = `
+      <div class="role-item-comp">${escapeHtml(job.Company)}</div>
+      <div class="role-item-title">${escapeHtml(job.Title)}</div>
+      <div class="role-item-meta">
+        <span>${escapeHtml(job.PrimaryTrack || 'Data Track')}</span>
+        <span>${appliedLabel}</span>
+      </div>
+    `;
+
+    item.addEventListener('click', () => selectCoachRole(job));
+    elCoachRolesList.appendChild(item);
+  });
+}
+
+// Role search filter in coach sidebar
+elCoachSearchInput.addEventListener('input', (e) => {
+  const query = e.target.value.toLowerCase().trim();
+  const filtered = coachJobs.filter(j => 
+    (j.Company || '').toLowerCase().includes(query) || 
+    (j.Title || '').toLowerCase().includes(query) ||
+    (j.PrimaryTrack || '').toLowerCase().includes(query)
+  );
+  renderCoachRolesList(filtered);
+});
+
+async function selectCoachRole(job) {
+  currentCoachJob = job;
+
+  // Highlight in sidebar
+  document.querySelectorAll('.coach-role-item').forEach(el => el.classList.remove('active'));
+  const foundEl = Array.from(document.querySelectorAll('.coach-role-item')).find(el => 
+    el.textContent.includes(job.Company) && el.textContent.includes(job.Title.slice(0, 15))
+  );
+  if (foundEl) foundEl.classList.add('active');
+
+  // Update Header Card
+  elCoachCompanyPill.textContent = job.Company;
+  elCoachRoleTitle.textContent = job.Title;
+  elCoachRegionPill.textContent = job.PrimaryTrack || (job.region ? `${job.region} Track` : 'Engineering');
+  elCoachMetaLine.innerHTML = `Applied: <strong>${job.AppliedDate || 'Recent'}</strong> &bull; Match Score: <strong class="text-success">${job.AtsMatchScore || '99%'}</strong>`;
+
+  elCoachBtnViewLinkedIn.href = job.JobUrl || job.sourceUrl || '#';
+  elCoachBtnViewJd.onclick = () => openJdModalById(job.JobId || job.id);
+
+  // Fetch complete 5-pillar dossier
+  try {
+    const q = new URLSearchParams({
+      jobId: job.JobId || job.id || '',
+      company: job.Company || '',
+      role: job.Title || ''
+    });
+    const res = await fetch(`/api/interview/dossier?${q.toString()}`);
+    currentDossier = await res.json();
+    renderDossier(currentDossier);
+  } catch (err) {
+    console.error('Error fetching interview dossier:', err);
+  }
+}
+
+function renderDossier(dossier) {
+  // Pillar 1: Company Intel & Rounds
+  elCoachCultureText.textContent = dossier.dna.culture || 'High engineering standards, measurable delivery, cross-functional collaboration.';
+  elCoachRoundsContainer.innerHTML = '';
+  (dossier.dna.interviewLoop || []).forEach(r => {
+    const card = document.createElement('div');
+    card.className = 'round-card';
+    card.innerHTML = `
+      <div class="round-title">${escapeHtml(r.round)}</div>
+      <div class="round-focus">${escapeHtml(r.focus)}</div>
+    `;
+    elCoachRoundsContainer.appendChild(card);
+  });
+
+  // Pillar 2: 90-second Elevator Pitch
+  elCoachPitchText.textContent = dossier.elevatorPitch || 'Elevator pitch loading...';
+
+  // Pillar 3: Technical Questions
+  elCoachTechQuestionsList.innerHTML = '';
+  (dossier.technicalQuestions || []).forEach(q => {
+    const qCard = document.createElement('div');
+    qCard.className = 'q-card';
+
+    const rubricChips = (q.keyRubricTerms || []).map(t => `<span class="rubric-chip">${escapeHtml(t)}</span>`).join('');
+
+    qCard.innerHTML = `
+      <div class="q-card-top">
+        <span class="q-category-tag">${escapeHtml(q.category)}</span>
+        <button class="btn-subtle" style="padding: 4px 10px; font-size: 0.78rem;" onclick="loadQuestionInMockRoom('${q.id}')">
+          🎯 Practice Aloud
+        </button>
+      </div>
+      <div class="q-question-text">${escapeHtml(q.question)}</div>
+      <div class="q-eval-text"><strong>Interviewer Evaluates:</strong> ${escapeHtml(q.whatTheyEvaluate)}</div>
+      <div class="q-answer-box">
+        <div style="font-weight:700; color:#10b981; margin-bottom:4px;">💎 Model Architecture &amp; Answer:</div>
+        ${escapeHtml(q.modelAnswer)}
+      </div>
+      <div class="traps-box">
+        <strong>⚠️ Traps to Avoid:</strong> ${escapeHtml(q.trapsToAvoid)}
+      </div>
+      <div class="rubric-chips">
+        <span class="rubric-label">Key Terms Rubric:</span>
+        ${rubricChips}
+      </div>
+    `;
+    elCoachTechQuestionsList.appendChild(qCard);
+  });
+
+  // Pillar 4: STAR Stories
+  elCoachStarStoriesList.innerHTML = '';
+  (dossier.starStories || []).forEach(s => {
+    const sCard = document.createElement('div');
+    sCard.className = 'star-card';
+    sCard.innerHTML = `
+      <h4>🏆 ${escapeHtml(s.title)}</h4>
+      <div class="star-row"><span class="star-tag star-tag-s">Situation:</span><span>${escapeHtml(s.situation)}</span></div>
+      <div class="star-row"><span class="star-tag star-tag-t">Task:</span><span>${escapeHtml(s.task)}</span></div>
+      <div class="star-row"><span class="star-tag star-tag-a">Action:</span><span>${escapeHtml(s.action)}</span></div>
+      <div class="star-row"><span class="star-tag star-tag-r">Result:</span><span><strong>${escapeHtml(s.result)}</strong></span></div>
+    `;
+    elCoachStarStoriesList.appendChild(sCard);
+  });
+
+  // Pillar 5: Populate Mock Room Dropdown
+  elMockQuestionDropdown.innerHTML = '<option value="">-- Choose a question to practice --</option>';
+  (dossier.technicalQuestions || []).forEach(q => {
+    const opt = document.createElement('option');
+    opt.value = q.id;
+    opt.textContent = `[${q.category}] ${q.question.slice(0, 65)}...`;
+    elMockQuestionDropdown.appendChild(opt);
+  });
+
+  // Pre-load first question
+  if (dossier.technicalQuestions && dossier.technicalQuestions.length > 0) {
+    loadQuestionInMockRoom(dossier.technicalQuestions[0].id);
+  }
+
+  // Pillar 6: Reverse Questions to Ask Them
+  elCoachReverseQuestionsList.innerHTML = '';
+  (dossier.reverseQuestions || []).forEach(rq => {
+    const rCard = document.createElement('div');
+    rCard.className = 'reverse-card';
+    rCard.textContent = `\"${rq}\"`;
+    elCoachReverseQuestionsList.appendChild(rCard);
+  });
+}
+
+// Pillar Navigation Tabs in Coach View
+function setupCoachPillars() {
+  const tabs = document.querySelectorAll('.pillar-tab');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const pillar = tab.dataset.pillar;
+      document.querySelectorAll('.pillar-section').forEach(sec => sec.style.display = 'none');
+      const targetSec = document.getElementById(`pillar-${pillar}`);
+      if (targetSec) targetSec.style.display = 'block';
+    });
+  });
+
+  // Copy Pitch
+  elBtnCopyPitch.addEventListener('click', () => {
+    if (currentDossier && currentDossier.elevatorPitch) {
+      navigator.clipboard.writeText(currentDossier.elevatorPitch);
+      showToast("📋 Elevator pitch copied to clipboard!");
+    }
+  });
+
+  // Read Aloud Pitch using browser SpeechSynthesis
+  elBtnSpeakPitch.addEventListener('click', () => {
+    if (!('speechSynthesis' in window)) {
+      alert('Speech synthesis not supported in this browser.');
+      return;
+    }
+    if (window.speechSynthesis.speaking) {
+      window.speechSynthesis.cancel();
+      elBtnSpeakPitch.textContent = '🔊 Read Aloud';
+      return;
+    }
+    const utter = new SpeechSynthesisUtterance(currentDossier.elevatorPitch);
+    utter.rate = 0.95;
+    utter.onend = () => { elBtnSpeakPitch.textContent = '🔊 Read Aloud'; };
+    window.speechSynthesis.speak(utter);
+    elBtnSpeakPitch.textContent = '⏹ Stop Audio';
+  });
+
+  // Mock Dropdown selection
+  elMockQuestionDropdown.addEventListener('change', (e) => {
+    const qId = e.target.value;
+    if (qId) loadQuestionInMockRoom(qId);
+  });
+
+  // Submit Answer for AI Critique
+  elBtnSubmitCritique.addEventListener('click', submitMockCritique);
+}
+
+// Load Question into Mock Room and switch to Mock tab
+window.loadQuestionInMockRoom = function(qId) {
+  if (!currentDossier) return;
+  const q = (currentDossier.technicalQuestions || []).find(item => item.id === qId);
+  if (!q) return;
+
+  elMockActiveQuestion.textContent = q.question;
+  elMockQuestionDropdown.value = q.id;
+
+  // Jump to mock tab
+  document.querySelectorAll('.pillar-tab').forEach(t => t.classList.remove('active'));
+  const mockTab = document.querySelector('.pillar-tab[data-pillar="mock"]');
+  if (mockTab) mockTab.classList.add('active');
+
+  document.querySelectorAll('.pillar-section').forEach(sec => sec.style.display = 'none');
+  document.getElementById('pillar-mock').style.display = 'block';
+
+  elMockUserAnswer.value = '';
+  elMockFeedbackBox.style.display = 'none';
+};
+
+// Web Speech Recognition for Voice Dictation in Mock Room
+function setupVoiceRecognition() {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    elBtnMockVoice.style.display = 'none';
+    return;
+  }
+
+  speechRecognizer = new SpeechRecognition();
+  speechRecognizer.continuous = true;
+  speechRecognizer.interimResults = true;
+  speechRecognizer.lang = 'en-US';
+
+  speechRecognizer.onresult = (event) => {
+    let transcript = '';
+    for (let i = 0; i < event.results.length; i++) {
+      transcript += event.results[i][0].transcript + ' ';
+    }
+    elMockUserAnswer.value = transcript.trim();
+  };
+
+  speechRecognizer.onerror = (e) => {
+    console.warn('Speech recognition error:', e.error);
+    stopListening();
+  };
+
+  speechRecognizer.onend = () => {
+    stopListening();
+  };
+
+  elBtnMockVoice.addEventListener('click', () => {
+    if (isListening) {
+      stopListening();
+    } else {
+      startListening();
+    }
+  });
+}
+
+function startListening() {
+  if (!speechRecognizer) return;
+  try {
+    speechRecognizer.start();
+    isListening = true;
+    elBtnMockVoice.classList.add('listening');
+    elVoiceStatusText.textContent = 'Listening... (Speak Now)';
+  } catch (err) {
+    console.error('Error starting speech:', err);
+  }
+}
+
+function stopListening() {
+  if (speechRecognizer && isListening) {
+    speechRecognizer.stop();
+  }
+  isListening = false;
+  elBtnMockVoice.classList.remove('listening');
+  elVoiceStatusText.textContent = 'Dictate Answer';
+}
+
+// Submit mock answer to Gemini critique endpoint
+async function submitMockCritique() {
+  const answer = elMockUserAnswer.value.trim();
+  const question = elMockActiveQuestion.textContent.trim();
+  if (!answer) {
+    alert("Please type or speak your answer before requesting critique.");
+    return;
+  }
+
+  elBtnSubmitCritique.disabled = true;
+  elBtnSubmitCritique.textContent = "⏳ Gemini AI is Evaluating Your Response...";
+  stopListening();
+
+  try {
+    const payload = {
+      company: currentCoachJob ? currentCoachJob.Company : "Target Company",
+      role: currentCoachJob ? currentCoachJob.Title : "Senior Data Engineer",
+      question: question,
+      answer: answer,
+      questionType: "Technical & Behavioral"
+    };
+
+    const res = await fetch('/api/interview/critique', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    const critique = await res.json();
+    renderCritique(critique);
+  } catch (err) {
+    alert("Error getting critique: " + err.message);
+  } finally {
+    elBtnSubmitCritique.disabled = false;
+    elBtnSubmitCritique.textContent = "✨ Get Instant AI Coach Feedback & Score";
+  }
+}
+
+function renderCritique(c) {
+  elMockFeedbackBox.style.display = 'flex';
+
+  elFeedbackScoreNum.textContent = c.score || 80;
+  elFeedbackVerdict.textContent = c.verdict || 'Hire';
+  elFeedbackTip.textContent = c.coachingTip || 'Ground answers in concrete metrics and STAR format.';
+
+  // Color circle based on score
+  const scoreCircle = document.getElementById('feedback-score-circle');
+  if (c.score >= 85) {
+    scoreCircle.style.borderColor = '#10b981';
+    elFeedbackVerdict.style.color = '#10b981';
+  } else if (c.score >= 70) {
+    scoreCircle.style.borderColor = '#38bdf8';
+    elFeedbackVerdict.style.color = '#38bdf8';
+  } else {
+    scoreCircle.style.borderColor = '#f59e0b';
+    elFeedbackVerdict.style.color = '#f59e0b';
+  }
+
+  // Strengths
+  elFeedbackStrengthsList.innerHTML = '';
+  (c.strengths || []).forEach(st => {
+    const li = document.createElement('li');
+    li.textContent = st;
+    elFeedbackStrengthsList.appendChild(li);
+  });
+
+  // Gaps
+  elFeedbackGapsList.innerHTML = '';
+  (c.gaps || []).forEach(gap => {
+    const li = document.createElement('li');
+    li.textContent = gap;
+    elFeedbackGapsList.appendChild(li);
+  });
+
+  // Elevated Model Answer
+  elFeedbackElevatedAnswer.textContent = c.elevatedAnswer || 'Elevated model answer loading...';
+
+  // Smooth scroll down to feedback
+  elMockFeedbackBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// In-App Toast
 function showToast(msg) {
   let toast = document.getElementById('studio-toast');
   if (!toast) {

@@ -3,6 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
+const { generateInterviewDossier, critiqueAnswer } = require('./app/coach_engine.js');
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -159,6 +160,95 @@ app.get('/api/cron', (req, res) => {
 // 9. API: Trigger Refresh
 app.post('/api/daily/refresh', (req, res) => {
   res.json({ status: 'started', message: 'Daily refresh initiated.' });
+});
+
+// 10. API: Interview Coach - List All Applied Roles
+app.get('/api/interview/jobs', (req, res) => {
+  const appliedPath = path.join(__dirname, 'applied_jobs.json');
+  const rawApplied = readJson(appliedPath, []);
+  let list = Array.isArray(rawApplied) 
+    ? (rawApplied[0] && rawApplied[0].value ? rawApplied[0].value : rawApplied)
+    : (rawApplied.value || []);
+
+  // Also include any jobs from today's daily drop
+  const dailyPath = path.join(__dirname, 'app', 'daily_state.json');
+  const daily = readJson(dailyPath, { jobs: [] });
+  if (daily.jobs && Array.isArray(daily.jobs)) {
+    daily.jobs.forEach(j => {
+      const already = list.find(x => x.JobId === j.id || (x.JobUrl && x.JobUrl === j.sourceUrl));
+      if (!already) {
+        list.push({
+          ApplicationId: `DAILY-${j.id.slice(-4)}`,
+          JobId: j.id,
+          AppliedDate: j.isApplied ? (daily.date || 'Today') : 'Ready to Apply',
+          Status: j.isApplied ? 'Applied' : 'Curated',
+          Company: j.company,
+          Title: j.title,
+          Location: j.location,
+          AtsMatchScore: `${j.matchScore || 99}%`,
+          PrimaryTrack: j.region === 'India' ? 'India Track' : 'US Track',
+          KeyTech: (j.techTags || []).join(', '),
+          JobUrl: j.sourceUrl,
+          Description: j.description
+        });
+      }
+    });
+  }
+
+  res.json({ jobs: list });
+});
+
+// 11. API: Interview Coach - Generate 5-Pillar Prep Dossier
+app.get('/api/interview/dossier', (req, res) => {
+  const { jobId, company, role } = req.query;
+  const appliedPath = path.join(__dirname, 'applied_jobs.json');
+  const rawApplied = readJson(appliedPath, []);
+  let list = Array.isArray(rawApplied) 
+    ? (rawApplied[0] && rawApplied[0].value ? rawApplied[0].value : rawApplied)
+    : (rawApplied.value || []);
+
+  const dailyPath = path.join(__dirname, 'app', 'daily_state.json');
+  const daily = readJson(dailyPath, { jobs: [] });
+  const allJobs = [...list];
+  if (daily.jobs) {
+    daily.jobs.forEach(j => {
+      allJobs.push({
+        JobId: j.id,
+        Company: j.company,
+        Title: j.title,
+        AppliedDate: daily.date,
+        AtsMatchScore: `${j.matchScore}%`,
+        PrimaryTrack: j.region,
+        Description: j.description
+      });
+    });
+  }
+
+  let matched = allJobs.find(j => (jobId && (j.JobId === jobId || j.id === jobId)) || 
+                                  (company && j.Company && j.Company.toLowerCase() === company.toLowerCase()));
+  if (!matched) {
+    matched = {
+      JobId: jobId || "CUSTOM",
+      Company: company || "Target Company",
+      Title: role || "Senior Data Engineer",
+      AppliedDate: new Date().toISOString().slice(0, 10),
+      AtsMatchScore: "99%",
+      PrimaryTrack: "Data Engineering"
+    };
+  }
+
+  const dossier = generateInterviewDossier(matched);
+  res.json(dossier);
+});
+
+// 12. API: Interview Coach - Real-time AI Mock Critique
+app.post('/api/interview/critique', async (req, res) => {
+  try {
+    const feedback = await critiqueAnswer(req.body);
+    res.json(feedback);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // Fallback to index.html for Single Page App

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Resume Tailor Studio | Daily 10 Curated Applications</title>
+  <title>Resume Tailor Studio | Daily Applications &amp; AI Interview Prep Coach</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -22,7 +22,7 @@
         </div>
         <div class="logo-text">
           <h1>Resume Tailor Studio</h1>
-          <p>Daily 10 Curated Applications &bull; 5 India 🇮🇳 &amp; 5 USA 🇺🇸</p>
+          <p>Daily 10 Curated Applications &bull; 5 India 🇮🇳 &amp; 5 USA 🇺🇸 &bull; AI Interview Prep</p>
         </div>
       </div>
 
@@ -38,117 +38,349 @@
       </div>
     </header>
 
-    <!-- Daily Drop Hero Card -->
-    <div class="glass-card hero-card">
-      <div class="hero-content">
-        <div class="hero-left">
-          <div class="date-badge" id="hero-date">Loading Today's Date...</div>
-          <h2 class="hero-title">Today's Curated 10 Applications</h2>
-          <p class="hero-desc">
-            Top 5 India and Top 5 US positions freshly scanned from target corporate feeds in the past 24 hours, ranked against your profile with tailored 2-page ATS resumes ready to apply.
-          </p>
+    <!-- Main Navigation Bar (Switch between Applications and Interview Prep Coach) -->
+    <nav class="main-nav-bar">
+      <button class="nav-btn active" id="nav-btn-apps" data-view="applications">
+        <span class="nav-btn-icon">📋</span>
+        <span>Daily Applications</span>
+        <span class="nav-badge" id="nav-badge-apps">10</span>
+      </button>
+      <button class="nav-btn" id="nav-btn-coach" data-view="coach">
+        <span class="nav-btn-icon">🎯</span>
+        <span>Interview Prep Coach</span>
+        <span class="nav-badge nav-badge-pulse" id="nav-badge-coach">Applied</span>
+      </button>
+    </nav>
+
+    <!-- ================= VIEW 1: DAILY APPLICATIONS ================= -->
+    <div id="view-applications" class="app-view">
+      <!-- Daily Drop Hero Card -->
+      <div class="glass-card hero-card">
+        <div class="hero-content">
+          <div class="hero-left">
+            <div class="date-badge" id="hero-date">Loading Today's Date...</div>
+            <h2 class="hero-title">Today's Curated 10 Applications</h2>
+            <p class="hero-desc">
+              Top 5 India and Top 5 US positions freshly scanned from target corporate feeds in the past 24 hours, ranked against your profile with tailored 2-page ATS resumes ready to apply.
+            </p>
+          </div>
+          <div class="hero-actions">
+            <button id="btn-refresh-daily" class="btn-refresh">
+              <svg class="refresh-icon" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+              </svg>
+              Refresh &amp; Tailor Today's 10 Jobs
+            </button>
+            <button id="btn-test-notification" class="btn-subtle" title="Test Windows 10/11 desktop toast notification">
+              🔔 Test 8 PM Notification
+            </button>
+          </div>
         </div>
-        <div class="hero-actions">
-          <button id="btn-refresh-daily" class="btn-refresh">
-            <svg class="refresh-icon" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-              <path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
-            </svg>
-            Refresh &amp; Tailor Today's 10 Jobs
-          </button>
-          <button id="btn-test-notification" class="btn-subtle" title="Test Windows 10/11 desktop toast notification">
-            🔔 Test 8 PM Notification
-          </button>
+
+        <!-- Live Quick Stats -->
+        <div class="stats-bar">
+          <div class="stat-item">
+            <span class="stat-num" id="stat-total">10</span>
+            <span class="stat-label">Daily Roles</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-num" id="stat-india">5</span>
+            <span class="stat-label">🇮🇳 India Jobs</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-num" id="stat-us">5</span>
+            <span class="stat-label">🇺🇸 USA Jobs</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-num text-success" id="stat-applied">0</span>
+            <span class="stat-label">Applied Today</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-num" id="stat-avg-match">99%</span>
+            <span class="stat-label">Avg Profile Match</span>
+          </div>
         </div>
       </div>
 
-      <!-- Live Quick Stats -->
-      <div class="stats-bar">
-        <div class="stat-item">
-          <span class="stat-num" id="stat-total">10</span>
-          <span class="stat-label">Daily Roles</span>
+      <!-- Active Generation Progress Banner (Shown during refresh) -->
+      <div id="progress-container" class="glass-card progress-card" style="display: none;">
+        <div class="progress-header">
+          <span id="progress-status-text">Refreshing daily jobs...</span>
+          <span id="progress-percentage">0%</span>
         </div>
-        <div class="stat-divider"></div>
-        <div class="stat-item">
-          <span class="stat-num" id="stat-india">5</span>
-          <span class="stat-label">🇮🇳 India Jobs</span>
+        <div class="progress-track">
+          <div id="progress-fill" class="progress-fill"></div>
         </div>
-        <div class="stat-divider"></div>
-        <div class="stat-item">
-          <span class="stat-num" id="stat-us">5</span>
-          <span class="stat-label">🇺🇸 USA Jobs</span>
+        <div id="progress-log" class="progress-sublog">Initializing daily ingestion pipeline...</div>
+      </div>
+
+      <!-- Region Filter Tabs -->
+      <div class="tabs-nav">
+        <div class="tabs-group">
+          <button class="tab-btn active" data-filter="all">All 10 Roles (<span id="tab-count-all">10</span>)</button>
+          <button class="tab-btn" data-filter="India">🇮🇳 India (<span id="tab-count-india">5</span>)</button>
+          <button class="tab-btn" data-filter="USA">🇺🇸 United States (<span id="tab-count-us">5</span>)</button>
+          <button class="tab-btn" data-filter="applied">✅ Applied (<span id="tab-count-applied">0</span>)</button>
         </div>
-        <div class="stat-divider"></div>
-        <div class="stat-item">
-          <span class="stat-num text-success" id="stat-applied">0</span>
-          <span class="stat-label">Applied Today</span>
-        </div>
-        <div class="stat-divider"></div>
-        <div class="stat-item">
-          <span class="stat-num" id="stat-avg-match">99%</span>
-          <span class="stat-label">Avg Profile Match</span>
+        <div class="schedule-note">
+          ⏰ 8:00 PM Daily Auto-Refresh &amp; Toast Alert is Active
         </div>
       </div>
+
+      <!-- Main Jobs Grid -->
+      <div id="jobs-container" class="jobs-grid">
+        <!-- Populated dynamically by app.js -->
+      </div>
+
+      <!-- Empty State Fallback -->
+      <div id="empty-state" class="glass-card empty-card" style="display: none;">
+        <div class="empty-icon">📁</div>
+        <h3>No Jobs in this View</h3>
+        <p>Click "Refresh &amp; Tailor Today's 10 Jobs" above to scan fresh roles for today.</p>
+      </div>
+
+      <!-- Collapsible Archive Section -->
+      <details class="glass-card archive-details">
+        <summary class="archive-summary">
+          <span>📦 Previous Batches &amp; Past Applications History</span>
+          <span class="summary-toggle-arrow">▾</span>
+        </summary>
+        <div class="archive-content">
+          <table class="archive-table" id="archive-table">
+            <thead>
+              <tr>
+                <th>Company &amp; Role</th>
+                <th>Bridged Experience Gaps</th>
+                <th>Status</th>
+                <th>Resumes &amp; Links</th>
+              </tr>
+            </thead>
+            <tbody id="archive-body">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </details>
     </div>
 
-    <!-- Active Generation Progress Banner (Shown during refresh) -->
-    <div id="progress-container" class="glass-card progress-card" style="display: none;">
-      <div class="progress-header">
-        <span id="progress-status-text">Refreshing daily jobs...</span>
-        <span id="progress-percentage">0%</span>
+    <!-- ================= VIEW 2: INTERVIEW PREP COACH ================= -->
+    <div id="view-coach" class="app-view" style="display: none;">
+      <!-- Coach Hero Card -->
+      <div class="glass-card hero-card coach-hero">
+        <div class="hero-content">
+          <div class="hero-left">
+            <div class="date-badge coach-badge">🎯 Elite Interview Preparation Coach</div>
+            <h2 class="hero-title" id="coach-hero-title">Prepare for Your Next Interview</h2>
+            <p class="hero-desc">
+              Tailored company intelligence, question rubrics, personalized STAR stories, and real-time AI mock coaching to maximize your offer probability.
+            </p>
+          </div>
+          <div class="coach-role-selector-wrap">
+            <label for="coach-job-select" class="selector-label">Select Applied Role to Prepare:</label>
+            <select id="coach-job-select" class="coach-select">
+              <option value="">Loading applied roles...</option>
+            </select>
+          </div>
+        </div>
       </div>
-      <div class="progress-track">
-        <div id="progress-fill" class="progress-fill"></div>
-      </div>
-      <div id="progress-log" class="progress-sublog">Initializing daily ingestion pipeline...</div>
-    </div>
 
-    <!-- Region Filter Tabs -->
-    <div class="tabs-nav">
-      <div class="tabs-group">
-        <button class="tab-btn active" data-filter="all">All 10 Roles (<span id="tab-count-all">10</span>)</button>
-        <button class="tab-btn" data-filter="India">🇮🇳 India (<span id="tab-count-india">5</span>)</button>
-        <button class="tab-btn" data-filter="USA">🇺🇸 United States (<span id="tab-count-us">5</span>)</button>
-        <button class="tab-btn" data-filter="applied">✅ Applied (<span id="tab-count-applied">0</span>)</button>
-      </div>
-      <div class="schedule-note">
-        ⏰ 8:00 PM Daily Auto-Refresh &amp; Toast Alert is Active
+      <!-- Coach Main Layout -->
+      <div class="coach-layout">
+        <!-- Left Sidebar: Applied Roles Quick List -->
+        <aside class="coach-sidebar glass-card">
+          <div class="sidebar-header">
+            <h4>Applied Roles (<span id="coach-roles-count">0</span>)</h4>
+            <input type="text" id="coach-search-input" placeholder="Filter company/role..." class="coach-search" />
+          </div>
+          <div id="coach-roles-list" class="coach-roles-list">
+            <!-- Populated dynamically -->
+          </div>
+        </aside>
+
+        <!-- Right Main Panel: The 6 Interview Pillars -->
+        <main class="coach-main-panel">
+          <!-- Active Role Overview Card -->
+          <div class="glass-card active-role-card" id="coach-active-header">
+            <div class="role-headline">
+              <div>
+                <span class="company-badge" id="coach-company-pill">Company</span>
+                <span class="region-pill badge-india" id="coach-region-pill">Track</span>
+                <h2 class="coach-active-title" id="coach-role-title">Select a role to start</h2>
+                <div class="coach-meta-line" id="coach-meta-line">Applied Date: Recently &bull; ATS Match: 99%</div>
+              </div>
+              <div class="coach-header-cta">
+                <button class="btn-subtle" id="coach-btn-view-jd">View Job Description</button>
+                <a id="coach-btn-view-linkedin" href="#" target="_blank" class="btn-action btn-apply">LinkedIn Post ↗</a>
+              </div>
+            </div>
+
+            <!-- Pillars Jump Navigation -->
+            <div class="pillars-nav">
+              <button class="pillar-tab active" data-pillar="intel">🏢 Company Intel</button>
+              <button class="pillar-tab" data-pillar="pitch">🎙️ 90s Elevator Pitch</button>
+              <button class="pillar-tab" data-pillar="tech">💻 Technical Q&amp;A</button>
+              <button class="pillar-tab" data-pillar="star">⭐ STAR Stories</button>
+              <button class="pillar-tab pillar-tab-highlight" data-pillar="mock">🤖 AI Mock Room</button>
+              <button class="pillar-tab" data-pillar="reverse">🙋 Questions to Ask</button>
+            </div>
+          </div>
+
+          <!-- Pillar Sections -->
+          <div id="pillar-content-area">
+            <!-- 1. Company Intel -->
+            <section id="pillar-intel" class="pillar-section">
+              <div class="glass-card pillar-card">
+                <div class="pillar-card-header">
+                  <span class="pillar-icon">🏢</span>
+                  <div>
+                    <h3>Company DNA &amp; Interview Process</h3>
+                    <p class="pillar-subtitle">What this company prioritizes and how their loop is structured.</p>
+                  </div>
+                </div>
+                <div class="culture-box">
+                  <div class="culture-title">Hiring Values &amp; Evaluation Focus:</div>
+                  <div id="coach-culture-text" class="culture-text">Loading...</div>
+                </div>
+                <h4 class="subhead">Expected Interview Rounds:</h4>
+                <div id="coach-rounds-container" class="rounds-grid"></div>
+              </div>
+            </section>
+
+            <!-- 2. Elevator Pitch -->
+            <section id="pillar-pitch" class="pillar-section" style="display: none;">
+              <div class="glass-card pillar-card">
+                <div class="pillar-card-header">
+                  <span class="pillar-icon">🎙️</span>
+                  <div>
+                    <h3>Tailored 90-Second Opening Monologue</h3>
+                    <p class="pillar-subtitle">Custom "Tell Me About Yourself" pitch connecting your background directly to this role.</p>
+                  </div>
+                  <div class="pitch-actions">
+                    <button class="btn-subtle" id="btn-copy-pitch">📋 Copy</button>
+                    <button class="btn-subtle" id="btn-speak-pitch">🔊 Read Aloud</button>
+                  </div>
+                </div>
+                <div class="pitch-speech-box" id="coach-pitch-text">
+                  Loading tailored pitch...
+                </div>
+              </div>
+            </section>
+
+            <!-- 3. Technical Questions -->
+            <section id="pillar-tech" class="pillar-section" style="display: none;">
+              <div class="glass-card pillar-card">
+                <div class="pillar-card-header">
+                  <span class="pillar-icon">💻</span>
+                  <div>
+                    <h3>High-Probability Technical &amp; System Design Questions</h3>
+                    <p class="pillar-subtitle">Curated based on this role's specific tech stack and evaluation rubric.</p>
+                  </div>
+                </div>
+                <div id="coach-tech-questions-list" class="questions-list"></div>
+              </div>
+            </section>
+
+            <!-- 4. STAR Stories -->
+            <section id="pillar-star" class="pillar-section" style="display: none;">
+              <div class="glass-card pillar-card">
+                <div class="pillar-card-header">
+                  <span class="pillar-icon">⭐</span>
+                  <div>
+                    <h3>Vipul's Project-Mapped STAR Behavioral Stories</h3>
+                    <p class="pillar-subtitle">Situation, Task, Action, Result structured with hard metrics from your real projects.</p>
+                  </div>
+                </div>
+                <div id="coach-star-stories-list" class="star-grid"></div>
+              </div>
+            </section>
+
+            <!-- 5. AI Mock Practice Room -->
+            <section id="pillar-mock" class="pillar-section" style="display: none;">
+              <div class="glass-card pillar-card mock-room-card">
+                <div class="pillar-card-header">
+                  <span class="pillar-icon">🤖</span>
+                  <div>
+                    <h3>Interactive AI Mock Interviewer</h3>
+                    <p class="pillar-subtitle">Practice answering aloud or typing. Get instant Gemini critique, score, and model revision.</p>
+                  </div>
+                </div>
+
+                <div class="mock-question-box">
+                  <div class="mock-q-label">Current Question to Practice:</div>
+                  <div id="mock-active-question" class="mock-q-text">
+                    Select a question or choose from the dropdown below.
+                  </div>
+                  <select id="mock-question-dropdown" class="coach-select" style="margin-top: 10px;">
+                    <option value="">Choose a practice question...</option>
+                  </select>
+                </div>
+
+                <div class="mock-input-wrap">
+                  <div class="mock-input-header">
+                    <span>Your Answer (Speak or Type):</span>
+                    <button id="btn-mock-voice" class="btn-voice-record" title="Click to speak using your microphone">
+                      <span class="mic-icon">🎤</span> <span id="voice-status-text">Dictate Answer</span>
+                    </button>
+                  </div>
+                  <textarea id="mock-user-answer" class="mock-textarea" rows="5" placeholder="Click 'Dictate Answer' to speak, or type your answer here..."></textarea>
+                  <button id="btn-submit-critique" class="btn-refresh" style="width: 100%; margin-top: 12px;">
+                    ✨ Get Instant AI Coach Feedback &amp; Score
+                  </button>
+                </div>
+
+                <!-- Live Feedback Display -->
+                <div id="mock-feedback-box" class="mock-feedback-card" style="display: none;">
+                  <div class="feedback-top-bar">
+                    <div class="score-badge-circle" id="feedback-score-circle">
+                      <span id="feedback-score-num">85</span>
+                      <small>/ 100</small>
+                    </div>
+                    <div>
+                      <div class="verdict-label" id="feedback-verdict">Strong Hire</div>
+                      <div class="coaching-tip" id="feedback-tip">Coach tip here</div>
+                    </div>
+                  </div>
+
+                  <div class="feedback-details-grid">
+                    <div class="feedback-col strengths-col">
+                      <h4>✅ What Impressed the Interviewer</h4>
+                      <ul id="feedback-strengths-list"></ul>
+                    </div>
+                    <div class="feedback-col gaps-col">
+                      <h4>⚠️ Gaps &amp; Missing Keywords</h4>
+                      <ul id="feedback-gaps-list"></ul>
+                    </div>
+                  </div>
+
+                  <div class="model-rewrite-box">
+                    <div class="rewrite-header">💎 Elite Model Phrasing:</div>
+                    <div id="feedback-elevated-answer" class="rewrite-text"></div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- 6. Reverse Questions -->
+            <section id="pillar-reverse" class="pillar-section" style="display: none;">
+              <div class="glass-card pillar-card">
+                <div class="pillar-card-header">
+                  <span class="pillar-icon">🙋</span>
+                  <div>
+                    <h3>High-Signal Reverse Questions to Ask Them</h3>
+                    <p class="pillar-subtitle">Questions that demonstrate deep architectural maturity and make you memorable.</p>
+                  </div>
+                </div>
+                <div id="coach-reverse-questions-list" class="reverse-grid"></div>
+              </div>
+            </section>
+          </div>
+        </main>
       </div>
     </div>
-
-    <!-- Main Jobs Grid -->
-    <div id="jobs-container" class="jobs-grid">
-      <!-- Populated dynamically by app.js -->
-    </div>
-
-    <!-- Empty State Fallback -->
-    <div id="empty-state" class="glass-card empty-card" style="display: none;">
-      <div class="empty-icon">📁</div>
-      <h3>No Jobs in this View</h3>
-      <p>Click "Refresh &amp; Tailor Today's 10 Jobs" above to scan fresh roles for today.</p>
-    </div>
-
-    <!-- Collapsible Archive Section -->
-    <details class="glass-card archive-details">
-      <summary class="archive-summary">
-        <span>📦 Previous Batches &amp; Past Applications History</span>
-        <span class="summary-toggle-arrow">▾</span>
-      </summary>
-      <div class="archive-content">
-        <table class="archive-table" id="archive-table">
-          <thead>
-            <tr>
-              <th>Company &amp; Role</th>
-              <th>Bridged Experience Gaps</th>
-              <th>Status</th>
-              <th>Resumes &amp; Links</th>
-            </tr>
-          </thead>
-          <tbody id="archive-body">
-            <!-- Dynamically populated -->
-          </tbody>
-        </table>
-      </div>
-    </details>
 
   </div>
 
