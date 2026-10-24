@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resume Tailor Studio | Daily 10 Curated Applications</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="container">
+    <!-- Top Header -->
+    <header class="main-header">
+      <div class="logo-area">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6M16 13H8M16 17H8M10 9H8"></path>
+          </svg>
+        </div>
+        <div class="logo-text">
+          <h1>Resume Tailor Studio</h1>
+          <p>Daily 10 Curated Applications &bull; 5 India 🇮🇳 &amp; 5 USA 🇺🇸</p>
+        </div>
+      </div>
+
+      <div class="header-pills">
+        <div class="pill pill-green" id="baseline-status" title="Master baseline resume guard">
+          <span class="dot dot-green"></span>
+          <span id="baseline-text">Master Resume Active</span>
+        </div>
+        <div class="pill pill-blue" id="automation-pill" title="Automated daily 8:00 PM scan and notification">
+          <span class="bell-icon">🔔</span>
+          <span>Daily 8:00 PM Alert: Active</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Daily Drop Hero Card -->
+    <div class="glass-card hero-card">
+      <div class="hero-content">
+        <div class="hero-left">
+          <div class="date-badge" id="hero-date">Loading Today's Date...</div>
+          <h2 class="hero-title">Today's Curated 10 Applications</h2>
+          <p class="hero-desc">
+            Top 5 India and Top 5 US positions freshly scanned from target corporate feeds in the past 24 hours, ranked against your profile with tailored 2-page ATS resumes ready to apply.
+          </p>
+        </div>
+        <div class="hero-actions">
+          <button id="btn-refresh-daily" class="btn-refresh">
+            <svg class="refresh-icon" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+            </svg>
+            Refresh &amp; Tailor Today's 10 Jobs
+          </button>
+          <button id="btn-test-notification" class="btn-subtle" title="Test Windows 10/11 desktop toast notification">
+            🔔 Test 8 PM Notification
+          </button>
+        </div>
+      </div>
+
+      <!-- Live Quick Stats -->
+      <div class="stats-bar">
+        <div class="stat-item">
+          <span class="stat-num" id="stat-total">10</span>
+          <span class="stat-label">Daily Roles</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-num" id="stat-india">5</span>
+          <span class="stat-label">🇮🇳 India Jobs</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-num" id="stat-us">5</span>
+          <span class="stat-label">🇺🇸 USA Jobs</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-num text-success" id="stat-applied">0</span>
+          <span class="stat-label">Applied Today</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-num" id="stat-avg-match">99%</span>
+          <span class="stat-label">Avg Profile Match</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Active Generation Progress Banner (Shown during refresh) -->
+    <div id="progress-container" class="glass-card progress-card" style="display: none;">
+      <div class="progress-header">
+        <span id="progress-status-text">Refreshing daily jobs...</span>
+        <span id="progress-percentage">0%</span>
+      </div>
+      <div class="progress-track">
+        <div id="progress-fill" class="progress-fill"></div>
+      </div>
+      <div id="progress-log" class="progress-sublog">Initializing daily ingestion pipeline...</div>
+    </div>
+
+    <!-- Region Filter Tabs -->
+    <div class="tabs-nav">
+      <div class="tabs-group">
+        <button class="tab-btn active" data-filter="all">All 10 Roles (<span id="tab-count-all">10</span>)</button>
+        <button class="tab-btn" data-filter="India">🇮🇳 India (<span id="tab-count-india">5</span>)</button>
+        <button class="tab-btn" data-filter="USA">🇺🇸 United States (<span id="tab-count-us">5</span>)</button>
+        <button class="tab-btn" data-filter="applied">✅ Applied (<span id="tab-count-applied">0</span>)</button>
+      </div>
+      <div class="schedule-note">
+        ⏰ 8:00 PM Daily Auto-Refresh &amp; Toast Alert is Active
+      </div>
+    </div>
+
+    <!-- Main Jobs Grid -->
+    <div id="jobs-container" class="jobs-grid">
+      <!-- Populated dynamically by app.js -->
+    </div>
+
+    <!-- Empty State Fallback -->
+    <div id="empty-state" class="glass-card empty-card" style="display: none;">
+      <div class="empty-icon">📁</div>
+      <h3>No Jobs in this View</h3>
+      <p>Click "Refresh &amp; Tailor Today's 10 Jobs" above to scan fresh roles for today.</p>
+    </div>
+
+    <!-- Collapsible Archive Section -->
+    <details class="glass-card archive-details">
+      <summary class="archive-summary">
+        <span>📦 Previous Batches &amp; Past Applications History</span>
+        <span class="summary-toggle-arrow">▾</span>
+      </summary>
+      <div class="archive-content">
+        <table class="archive-table" id="archive-table">
+          <thead>
+            <tr>
+              <th>Company &amp; Role</th>
+              <th>Bridged Experience Gaps</th>
+              <th>Status</th>
+              <th>Resumes &amp; Links</th>
+            </tr>
+          </thead>
+          <tbody id="archive-body">
+            <!-- Dynamically populated -->
+          </tbody>
+        </table>
+      </div>
+    </details>
+
+  </div>
+
+  <!-- Job Description Modal -->
+  <div id="jd-modal" class="modal-backdrop" style="display: none;">
+    <div class="modal-dialog glass-card">
+      <div class="modal-header">
+        <div>
+          <span id="modal-region" class="modal-region-badge">🇮🇳 India</span>
+          <span id="modal-company" class="modal-company-badge">Company</span>
+          <h3 id="modal-title" class="modal-title">Job Title</h3>
+        </div>
+        <button id="btn-close-modal" class="modal-close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="modal-description" class="modal-desc-text"></div>
+      </div>
+      <div class="modal-footer">
+        <a id="modal-source-link" href="#" target="_blank" class="btn-action btn-apply">Apply on LinkedIn ↗</a>
+        <button id="btn-modal-dismiss" class="btn-subtle" style="padding: 8px 18px;">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

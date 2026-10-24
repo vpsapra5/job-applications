@@ -1,0 +1,12 @@
+﻿{
+    "company":  "Visa",
+    "role":  "Senior Data Scientist, AI Solutions Engineering - Client Services",
+    "sourceUrl":  "https://www.linkedin.com/jobs/view/4475038854/",
+    "timestamp":  "2026-10-24 18:57:25",
+    "synthesizedPoints":  [
+                              "Bridged enterprise data engineering experience with Visa\u0027s need for scalable data models, semantic layers, and certified datasets by highlighting dimensional data modeling and SCD Type 1/2 implementations.",
+                              "Mapped real-world machine learning and predictive modeling expertise (XGBoost, Random Forests, SARIMA) directly to Visa\u0027s requirement for advanced data science solutions and client service optimizations.",
+                              "Demonstrated practical implementation of Generative and Agentic AI tools (KIRO IDE, prompt engineering, SpectrumIQ) aligning directly with Visa\u0027s AI fluency and toolchain expectations.",
+                              "Proved cross-functional leadership and stakeholder collaboration through automated QA frameworks, executive dashboards (KOM), and high-throughput operational pipeline management."
+                          ]
+}

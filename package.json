@@ -1,0 +1,17 @@
+{
+  "name": "resume-tailor-studio",
+  "version": "1.0.0",
+  "description": "Daily Curated Job Applications & Tailored Resumes Studio (5 India & 5 USA)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.6.1",
+    "express": "^4.22.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

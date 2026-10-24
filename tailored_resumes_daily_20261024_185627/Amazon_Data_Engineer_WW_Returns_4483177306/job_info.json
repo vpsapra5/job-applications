@@ -1,0 +1,12 @@
+﻿{
+    "company":  "Amazon",
+    "role":  "Data Engineer, WW Returns \u0026 ReComm Tech\u0026 Inn",
+    "sourceUrl":  "https://www.linkedin.com/jobs/view/4483177306/",
+    "timestamp":  "2026-10-24 18:57:11",
+    "synthesizedPoints":  [
+                              "Bridged enterprise data warehouse architecture experience with Amazon\u0027s Reverse Logistics requirements using AWS S3, Redshift, and Snowflake.",
+                              "Mapped high-throughput ETL pipeline development and performance tuning to the need for scalable data infrastructure.",
+                              "Integrated software development best practices and agile methodologies through automated testing frameworks and cross-functional engineering collaboration.",
+                              "Demonstrated expertise in writing and optimizing complex SQL scripts and data modeling for massive enterprise datasets."
+                          ]
+}

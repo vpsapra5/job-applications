@@ -1,0 +1,12 @@
+﻿{
+    "company":  "Deloitte",
+    "role":  "Delivery Senior Consultant, Software Engineering Solutions, Identity \u0026 Gen AI Engineer",
+    "sourceUrl":  "https://www.linkedin.com/jobs/view/4466037935/",
+    "timestamp":  "2026-10-24 18:57:42",
+    "synthesizedPoints":  [
+                              "Bridged anomaly detection and machine learning expertise to address identity fraud vectors such as credential stuffing and account takeovers.",
+                              "Mapped large-scale PySpark and Azure cloud data engineering capabilities to process high-volume authentication logs and behavioral datasets.",
+                              "Translated predictive modeling and classification experience (XGBoost, Scikit-Learn) into robust behavioral biometric and risk scoring heuristics.",
+                              "Established executive dashboards and operational metrics to monitor false-positive rates and model efficacy for client risk verification frameworks."
+                          ]
+}

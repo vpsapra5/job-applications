@@ -1,0 +1,12 @@
+﻿{
+    "company":  "Mastercard",
+    "role":  "Senior Data Analyst",
+    "sourceUrl":  "https://www.linkedin.com/jobs/view/4454134834/",
+    "timestamp":  "2026-10-24 18:57:01",
+    "synthesizedPoints":  [
+                              "Bridged Charter\u0027s dimensional modeling and high-throughput SQL expertise directly to Mastercard\u0027s requirement for building semantic models, self-service BI solutions, and optimizing large-scale queries.",
+                              "Mapped executive KOM dashboards and operational BI reporting at Charter to Mastercard\u0027s need for advanced reporting, Tableau/Power BI visualization, and portfolio health monitoring.",
+                              "Aligned automated data quality audit frameworks and validation firewalls with Mastercard\u0027s strict requirements for data quality controls, governance, and asset reliability.",
+                              "Integrated predictive customer analytics and forecasting (XGBoost, SARIMA, PySpark) with Mastercard\u0027s focus on executing cross-functional projects using advanced analytical techniques for strategic decision-making."
+                          ]
+}

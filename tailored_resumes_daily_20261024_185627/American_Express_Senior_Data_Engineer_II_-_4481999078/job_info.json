@@ -1,0 +1,12 @@
+﻿{
+    "company":  "American Express",
+    "role":  "Senior Data Engineer II - Amex Ads, Offers, and Dining Technology",
+    "sourceUrl":  "https://www.linkedin.com/jobs/view/4481999078/",
+    "timestamp":  "2026-10-24 18:57:37",
+    "synthesizedPoints":  [
+                              "Mapped Charter\u0027s high-throughput AWS and Snowflake data processing experience directly to Amex\u0027s cloud data platform and ingestion requirements.",
+                              "Highlighted advanced SQL tuning and Snowflake data layering expertise to meet Amex\u0027s need for optimized dining and offer analytics architectures.",
+                              "Translated automated data quality firewalls and anomaly detection frameworks into robust data validation and reconciliation solutions for enterprise POS datasets.",
+                              "Integrated modern CI/CD, Airflow orchestration, and data governance practices to satisfy operational excellence and platform reliability standards."
+                          ]
+}
