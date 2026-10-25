@@ -6,6 +6,9 @@ let pollTimer = null;
 
 // Coach State
 let coachJobs = [];
+let coachAppliedJobs = [];
+let coachCuratedJobs = [];
+let coachFilterMode = 'applied';
 let currentCoachJob = null;
 let currentDossier = null;
 let speechRecognizer = null;
@@ -105,6 +108,7 @@ window.addEventListener('DOMContentLoaded', () => {
   loadArchiveHistory();
   setupTabs();
   setupCoachPillars();
+  setupCoachFilterTabs();
   setupVoiceRecognition();
   requestBrowserNotificationPermission();
 });
@@ -505,14 +509,37 @@ async function loadCoachJobs() {
   try {
     const res = await fetch('/api/interview/jobs');
     const data = await res.json();
+    coachAppliedJobs = data.appliedJobs || [];
+    coachCuratedJobs = data.curatedJobs || [];
     coachJobs = data.jobs || [];
 
-    elCoachRolesCount.textContent = coachJobs.length;
-    renderCoachRolesList(coachJobs);
-    populateCoachDropdown(coachJobs);
+    const appliedCount = data.totalApplied !== undefined ? data.totalApplied : coachAppliedJobs.length;
 
-    // Auto-select first role
-    if (coachJobs.length > 0 && !currentCoachJob) {
+    // Explicitly update count in Applied Roles header: strictly totalApplied (1)
+    if (elCoachRolesCount) {
+      elCoachRolesCount.textContent = appliedCount;
+    }
+
+    // Update filter tabs button labels
+    const btnApp = document.getElementById('btn-coach-applied');
+    const btnCur = document.getElementById('btn-coach-curated');
+    const btnAll = document.getElementById('btn-coach-all');
+    if (btnApp) btnApp.textContent = `🎯 Applied (${appliedCount})`;
+    if (btnCur) btnCur.textContent = `📋 Curated (${coachCuratedJobs.length})`;
+    if (btnAll) btnAll.textContent = `All (${coachJobs.length})`;
+
+    // Update nav badge
+    if (elNavBadgeCoach) {
+      elNavBadgeCoach.textContent = `${appliedCount} Applied`;
+    }
+
+    applyCoachFilter(coachFilterMode);
+    populateCoachDropdown(coachAppliedJobs, coachCuratedJobs);
+
+    // Auto-select first applied role
+    if (coachAppliedJobs.length > 0 && !currentCoachJob) {
+      selectCoachRole(coachAppliedJobs[0]);
+    } else if (coachJobs.length > 0 && !currentCoachJob) {
       selectCoachRole(coachJobs[0]);
     }
   } catch (err) {
@@ -520,37 +547,95 @@ async function loadCoachJobs() {
   }
 }
 
-function populateCoachDropdown(jobs) {
-  elCoachJobSelect.innerHTML = '<option value="">-- Choose Applied Role --</option>';
-  jobs.forEach((job, idx) => {
-    const opt = document.createElement('option');
-    opt.value = job.JobId || job.id || idx;
-    opt.textContent = `${job.Company} - ${job.Title} (${job.Status || 'Applied'})`;
-    elCoachJobSelect.appendChild(opt);
+function setupCoachFilterTabs() {
+  const tabs = document.querySelectorAll('.coach-filter-btn');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const mode = tab.dataset.filter || 'applied';
+      applyCoachFilter(mode);
+    });
+  });
+}
+
+function applyCoachFilter(mode) {
+  coachFilterMode = mode;
+  document.querySelectorAll('.coach-filter-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.filter === mode);
   });
 
-  elCoachJobSelect.addEventListener('change', (e) => {
+  let list = [];
+  if (mode === 'applied') {
+    list = coachAppliedJobs;
+  } else if (mode === 'curated') {
+    list = coachCuratedJobs;
+  } else {
+    list = coachJobs;
+  }
+
+  const query = elCoachSearchInput ? elCoachSearchInput.value.toLowerCase().trim() : '';
+  if (query) {
+    list = list.filter(j => 
+      (j.Company || '').toLowerCase().includes(query) || 
+      (j.Title || '').toLowerCase().includes(query) ||
+      (j.PrimaryTrack || '').toLowerCase().includes(query)
+    );
+  }
+
+  renderCoachRolesList(list);
+}
+
+function populateCoachDropdown(applied, curated) {
+  elCoachJobSelect.innerHTML = '<option value="">-- Choose Role to Prepare --</option>';
+
+  if (applied && applied.length > 0) {
+    const groupApplied = document.createElement('optgroup');
+    groupApplied.label = `🎯 Applied Roles (${applied.length})`;
+    applied.forEach((job, idx) => {
+      const opt = document.createElement('option');
+      opt.value = job.JobId || job.id || `app-${idx}`;
+      opt.textContent = `${job.Company} - ${job.Title} (Applied)`;
+      groupApplied.appendChild(opt);
+    });
+    elCoachJobSelect.appendChild(groupApplied);
+  }
+
+  if (curated && curated.length > 0) {
+    const groupCurated = document.createElement('optgroup');
+    groupCurated.label = `📋 Today's Curated Roles (${curated.length})`;
+    curated.forEach((job, idx) => {
+      const opt = document.createElement('option');
+      opt.value = job.JobId || job.id || `cur-${idx}`;
+      opt.textContent = `${job.Company} - ${job.Title} (Curated)`;
+      groupCurated.appendChild(opt);
+    });
+    elCoachJobSelect.appendChild(groupCurated);
+  }
+
+  elCoachJobSelect.onchange = (e) => {
     const selectedId = e.target.value;
     const found = coachJobs.find(j => (j.JobId || j.id) == selectedId);
     if (found) selectCoachRole(found);
-  });
+  };
 }
 
 function renderCoachRolesList(jobs) {
   elCoachRolesList.innerHTML = '';
   if (jobs.length === 0) {
-    elCoachRolesList.innerHTML = '<div style="padding:12px; color:var(--text-muted); font-size:0.85rem;">No applied roles found.</div>';
+    const emptyMsg = coachFilterMode === 'applied' 
+      ? 'No applied roles yet. Mark roles as applied in Daily Applications.'
+      : 'No roles found for this filter.';
+    elCoachRolesList.innerHTML = `<div style="padding:16px; color:var(--text-muted); font-size:0.85rem; text-align:center;">${emptyMsg}</div>`;
     return;
   }
 
   jobs.forEach(job => {
     const item = document.createElement('div');
     item.className = 'coach-role-item';
-    if (currentCoachJob && (currentCoachJob.JobId === job.JobId || currentCoachJob.JobId === job.id)) {
+    if (currentCoachJob && ((currentCoachJob.JobId && currentCoachJob.JobId === job.JobId) || (currentCoachJob.id && currentCoachJob.id === job.id))) {
       item.classList.add('active');
     }
 
-    const appliedLabel = job.Status === 'Applied' ? '✅ Applied' : '🎯 Curated';
+    const appliedLabel = job.Status === 'Applied' ? '✅ Applied' : '📋 Curated';
 
     item.innerHTML = `
       <div class="role-item-comp">${escapeHtml(job.Company)}</div>
@@ -567,14 +652,8 @@ function renderCoachRolesList(jobs) {
 }
 
 // Role search filter in coach sidebar
-elCoachSearchInput.addEventListener('input', (e) => {
-  const query = e.target.value.toLowerCase().trim();
-  const filtered = coachJobs.filter(j => 
-    (j.Company || '').toLowerCase().includes(query) || 
-    (j.Title || '').toLowerCase().includes(query) ||
-    (j.PrimaryTrack || '').toLowerCase().includes(query)
-  );
-  renderCoachRolesList(filtered);
+elCoachSearchInput.addEventListener('input', () => {
+  applyCoachFilter(coachFilterMode);
 });
 
 async function selectCoachRole(job) {

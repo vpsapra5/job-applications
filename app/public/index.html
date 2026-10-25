@@ -48,7 +48,7 @@
       <button class="nav-btn" id="nav-btn-coach" data-view="coach">
         <span class="nav-btn-icon">🎯</span>
         <span>Interview Prep Coach</span>
-        <span class="nav-badge nav-badge-pulse" id="nav-badge-coach">Applied</span>
+        <span class="nav-badge nav-badge-pulse" id="nav-badge-coach">1 Applied</span>
       </button>
     </nav>
 
@@ -180,9 +180,9 @@
             </p>
           </div>
           <div class="coach-role-selector-wrap">
-            <label for="coach-job-select" class="selector-label">Select Applied Role to Prepare:</label>
+            <label for="coach-job-select" class="selector-label">Select Role to Prepare:</label>
             <select id="coach-job-select" class="coach-select">
-              <option value="">Loading applied roles...</option>
+              <option value="">Loading roles...</option>
             </select>
           </div>
         </div>
@@ -193,7 +193,12 @@
         <!-- Left Sidebar: Applied Roles Quick List -->
         <aside class="coach-sidebar glass-card">
           <div class="sidebar-header">
-            <h4>Applied Roles (<span id="coach-roles-count">0</span>)</h4>
+            <h4>Applied Roles (<span id="coach-roles-count">1</span>)</h4>
+            <div class="coach-filter-tabs">
+              <button class="coach-filter-btn active" data-filter="applied" id="btn-coach-applied">🎯 Applied (1)</button>
+              <button class="coach-filter-btn" data-filter="curated" id="btn-coach-curated">📋 Curated (9)</button>
+              <button class="coach-filter-btn" data-filter="all" id="btn-coach-all">All (10)</button>
+            </div>
             <input type="text" id="coach-search-input" placeholder="Filter company/role..." class="coach-search" />
           </div>
           <div id="coach-roles-list" class="coach-roles-list">

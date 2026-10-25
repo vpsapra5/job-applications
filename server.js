@@ -162,26 +162,30 @@ app.post('/api/daily/refresh', (req, res) => {
   res.json({ status: 'started', message: 'Daily refresh initiated.' });
 });
 
-// 10. API: Interview Coach - List All Applied Roles
+// 10. API: Interview Coach - List All Roles (Strictly Applied vs Curated)
 app.get('/api/interview/jobs', (req, res) => {
   const appliedPath = path.join(__dirname, 'applied_jobs.json');
   const rawApplied = readJson(appliedPath, []);
-  let list = Array.isArray(rawApplied) 
+  let appliedList = Array.isArray(rawApplied) 
     ? (rawApplied[0] && rawApplied[0].value ? rawApplied[0].value : rawApplied)
     : (rawApplied.value || []);
 
-  // Also include any jobs from today's daily drop
+  appliedList = appliedList.filter(j => j.Status === 'Applied');
+
+  // Load today's curated daily drop
   const dailyPath = path.join(__dirname, 'app', 'daily_state.json');
   const daily = readJson(dailyPath, { jobs: [] });
+  const curatedList = [];
+
   if (daily.jobs && Array.isArray(daily.jobs)) {
     daily.jobs.forEach(j => {
-      const already = list.find(x => x.JobId === j.id || (x.JobUrl && x.JobUrl === j.sourceUrl));
-      if (!already) {
-        list.push({
-          ApplicationId: `DAILY-${j.id.slice(-4)}`,
+      const isAlreadyInApplied = appliedList.some(a => a.JobId === j.id || (a.JobUrl && a.JobUrl === j.sourceUrl));
+      if (!isAlreadyInApplied) {
+        curatedList.push({
+          ApplicationId: `CURATED-${j.id.slice(-4)}`,
           JobId: j.id,
-          AppliedDate: j.isApplied ? (daily.date || 'Today') : 'Ready to Apply',
-          Status: j.isApplied ? 'Applied' : 'Curated',
+          AppliedDate: 'Curated (Ready to Apply)',
+          Status: 'Curated',
           Company: j.company,
           Title: j.title,
           Location: j.location,
@@ -195,7 +199,13 @@ app.get('/api/interview/jobs', (req, res) => {
     });
   }
 
-  res.json({ jobs: list });
+  res.json({
+    appliedJobs: appliedList,
+    curatedJobs: curatedList,
+    totalApplied: appliedList.length,
+    totalCurated: curatedList.length,
+    jobs: [...appliedList, ...curatedList]
+  });
 });
 
 // 11. API: Interview Coach - Generate 5-Pillar Prep Dossier
