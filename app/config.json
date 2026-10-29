@@ -5,6 +5,6 @@
     "usJobsCount":  5,
     "dailyNotificationTime":  "20:00",
     "notificationEnabled":  true,
-    "lastDailyRunDate":  "2026-10-24",
+    "lastDailyRunDate":  "2026-10-25",
     "scheduledTaskName":  "ResumeTailorStudioDaily8PM"
 }

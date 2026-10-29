@@ -64,10 +64,20 @@ app.get('/files/*', (req, res) => {
 
 // 3. API: Status
 app.get('/api/status', (req, res) => {
-  const baseExists = fs.existsSync(path.join(__dirname, 'VipulSapra_Resume.pdf'));
+  const indiaDocx = path.join(__dirname, 'original resume', 'India', 'VipulSapra_Resume.docx');
+  const indiaPdf  = path.join(__dirname, 'original resume', 'India', 'VipulSapra_Resume.pdf');
+  const usDocx    = path.join(__dirname, 'original resume', 'US', 'VipulSapra_Resume.docx');
+  const usPdf     = path.join(__dirname, 'original resume', 'US', 'VipulSapra_Resume.pdf');
+
+  const indiaExists = fs.existsSync(indiaDocx) || fs.existsSync(indiaPdf);
+  const usExists    = fs.existsSync(usDocx) || fs.existsSync(usPdf);
+  const baseExists  = indiaExists && usExists;
+
   res.json({
     baselineExists: baseExists,
-    baselineName: 'VipulSapra_Resume.pdf',
+    indiaBaseline: indiaExists,
+    usBaseline: usExists,
+    baselineName: 'Dual Baseline (India 🇮🇳 & US 🇺🇸)',
     serverTime: new Date().toISOString()
   });
 });

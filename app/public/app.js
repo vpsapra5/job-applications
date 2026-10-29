@@ -154,9 +154,13 @@ async function checkStatus() {
     const data = await res.json();
     const elBase = document.getElementById('baseline-text');
     if (data.baselineExists) {
-      elBase.textContent = `Master Resume Active (${data.baselineName})`;
+      elBase.textContent = data.baselineName || 'Dual Baseline Active (India 🇮🇳 & US 🇺🇸)';
+      const pill = document.getElementById('baseline-status');
+      if (pill) {
+        pill.title = 'India: Kharghar, Navi Mumbai (8888-033-168) | US: Charlotte, NC (513-693-6897)';
+      }
     } else {
-      elBase.textContent = 'Master Resume Missing';
+      elBase.textContent = 'Baseline Resume Missing';
     }
   } catch (e) {}
 }
