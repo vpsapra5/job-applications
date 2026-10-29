@@ -2,11 +2,11 @@
     "company":  "JPMorganChase",
     "role":  "Lead Software Engineer - Databricks/Snowflake/AWS",
     "sourceUrl":  "https://www.linkedin.com/jobs/view/4438588950/",
-    "timestamp":  "2026-10-25 21:07:22",
+    "timestamp":  "2026-10-28 22:33:13",
     "synthesizedPoints":  [
-                              "Bridged Charter\u0027s Azure Databricks and Spark experience directly to JPMorganChase\u0027s requirements for large-scale distributed data processing.",
-                              "Mapped Snowflake and dimensional data modeling expertise to enterprise data warehousing needs for secure banking operations.",
-                              "Integrated AWS and Azure multi-cloud data pipeline management with strict adherence to 99.9% availability SLAs.",
-                              "Demonstrated advanced machine learning and automated testing frameworks to fulfill modern software engineering and data reliability standards."
+                              "Bridged large-scale Databricks, Snowflake, and AWS cloud engineering experience directly to JPMorganChase\u0027s core infrastructure requirements.",
+                              "Infused advanced Generative AI, agentic workflows (KIRO IDE), and autonomous anomaly detection into enterprise software engineering practices.",
+                              "Demonstrated rigorous enterprise data governance, high-throughput pipeline reliability (99.9% SLAs), and automated data quality firewalls.",
+                              "Aligned machine learning predictive modeling (XGBoost, SARIMA) and executive decision intelligence seamlessly with high-stakes financial technology use cases."
                           ]
 }

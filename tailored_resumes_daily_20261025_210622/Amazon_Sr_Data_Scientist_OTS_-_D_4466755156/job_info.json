@@ -2,11 +2,11 @@
     "company":  "Amazon",
     "role":  "Sr. Data Scientist, OTS - Data ANCHOR Team",
     "sourceUrl":  "https://www.linkedin.com/jobs/view/4466755156/",
-    "timestamp":  "2026-10-25 21:07:32",
+    "timestamp":  "2026-10-28 22:33:21",
     "synthesizedPoints":  [
-                              "Mapped Charter\u0027s advanced predictive modeling (XGBoost, Random Forests) and time-series forecasting (SARIMA) directly to Amazon\u0027s requirement for IT service demand forecasting, incident volume prediction, and capacity planning.",
-                              "Aligned high-throughput anomaly detection systems (95% accuracy) with Amazon\u0027s need for intelligent triaging models and proactive operational incident prevention.",
-                              "Integrated AWS cloud ecosystem experience (S3, Redshift, Lambda) with productionizing machine learning pipelines for IT infrastructure operations.",
-                              "Leveraged automated data quality auditing frameworks and executive KOM dashboards to mirror Amazon\u0027s focus on operational data integrity, rigorous scientific validation, and data-driven storytelling."
+                              "Bridged 5+ years of Python, SQL, and production machine learning development (XGBoost, classification, regression, time-series forecasting, anomaly detection) directly aligning with Amazon\u0027s core analytics requirements.",
+                              "Demonstrated extensive experience building and productionizing ML models for capacity planning, operational forecasting, and intelligent triaging similar to the OTS ANCHOR team charter.",
+                              "Leveraged cutting-edge Generative AI and agentic workflow orchestration (KIRO IDE, Copilot) to automate software development and data profiling, matching Amazon\u0027s focus on agentic AI solutions.",
+                              "Brought robust cloud data platform expertise across AWS (S3, Redshift) and distributed data frameworks (Spark, Databricks, Snowflake) ensuring seamless scalability for global IT infrastructure reporting."
                           ]
 }

@@ -2,11 +2,11 @@
     "company":  "Goldman Sachs",
     "role":  "The Core Engineering - Search \u0026 Entity Model Eng - Associate - Hyderabad",
     "sourceUrl":  "https://www.linkedin.com/jobs/view/4379689055/",
-    "timestamp":  "2026-10-25 21:07:13",
+    "timestamp":  "2026-10-28 22:32:35",
     "synthesizedPoints":  [
-                              "Aligned Vipul\u0027s real Charter Communications Agentic AI and prompt engineering initiatives directly with Goldman Sachs Compliance Engineering requirements for GenAI and vertical AI agents.",
-                              "Mapped high-throughput predictive modeling (XGBoost, SARIMA, Scikit-Learn) to the team\u0027s need for advanced machine learning algorithms processing petabyte-scale structured and unstructured data.",
-                              "Positioned Vipul\u0027s production-grade MLOps, Airflow monitoring, and containerized data engineering workflows against enterprise cloud infrastructure and deployment standards.",
-                              "Highlighted automated data governance frameworks, data quality audits, and robust firewall systems to address strict financial risk, compliance, and regulatory mandates."
+                              "Bridged enterprise data systems with cutting-edge GenAI and agentic workflows (KIRO IDE, prompt orchestration) to automate complex data pipelines and compliance-adjacent tasks.",
+                              "Engineered high-precision autonomous machine learning anomaly detection frameworks (95% precision) directly applicable to risk mitigation and data integrity enforcement.",
+                              "Built predictive and time-series models (XGBoost, SARIMA) handling massive-scale enterprise data to optimize critical operational capacity and decision-making.",
+                              "Demonstrated robust cloud-scale data engineering expertise across Azure, AWS, and Databricks with stringent data governance, lineage (Collibra), and 99.9% availability SLAs."
                           ]
 }

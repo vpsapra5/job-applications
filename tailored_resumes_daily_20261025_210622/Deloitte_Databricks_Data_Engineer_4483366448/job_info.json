@@ -2,11 +2,11 @@
     "company":  "Deloitte",
     "role":  "Databricks Data Engineer",
     "sourceUrl":  "https://www.linkedin.com/jobs/view/4483366448/",
-    "timestamp":  "2026-10-25 21:07:17",
+    "timestamp":  "2026-10-28 22:33:09",
     "synthesizedPoints":  [
-                              "Mapped Vipul\u0027s high-throughput data processing and cloud data architecture experience at Charter directly to Deloitte\u0027s Databricks Data Engineer requirements for modernizing enterprise platforms.",
-                              "Integrated his hands-on background in Apache Spark, PySpark, Python, and SQL with the target role\u0027s core technical stack for building scalable data pipelines.",
-                              "Bridged his experience in implementing dimensional models, Star/Snowflake schemas, and SCD patterns to satisfy Deloitte\u0027s need for advanced data integration and data modeling practices.",
-                              "Highlighted his success in deploying automated data quality audit frameworks and ML-driven data reliability systems to fulfill client-facing delivery expectations for data governance and platform performance."
+                              "Directly mapped Vipul\u0027s extensive Databricks, Apache Spark, Python, and SQL experience to Deloitte\u0027s core requirements for modernizing enterprise data platforms and cloud ingestion pipelines.",
+                              "Highlighted hands-on delivery of batch and streaming data workflows, Delta Lake architecture, and Databricks lakehouse optimization matching Deloitte\u0027s preferred technical stack.",
+                              "Demonstrated strong consulting-style client service delivery, cross-functional collaboration, and project leadership through autonomous agentic AI implementations and executive BI dashboards.",
+                              "Integrated modern Generative AI, MLOps, and automated data quality governance practices to position Vipul as an elite AI-Forward Data Engineer capable of scaling analytics and AI capabilities."
                           ]
 }

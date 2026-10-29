@@ -2,11 +2,11 @@
     "company":  "Amazon",
     "role":  "Software Dev Engineer II, Profit Intelligence",
     "sourceUrl":  "https://www.linkedin.com/jobs/view/4457379115/",
-    "timestamp":  "2026-10-25 21:07:07",
+    "timestamp":  "2026-10-28 22:32:31",
     "synthesizedPoints":  [
-                              "Bridged large-scale distributed data processing requirements by scaling PySpark and cloud data warehouses to handle hundreds of terabytes of multi-source transactional events.",
-                              "Aligned machine learning and predictive modeling expertise (XGBoost, SARIMA) directly with profit intelligence, demand forecasting, and unit economics objectives.",
-                              "Integrated generative AI and conversational frameworks into analytics platforms to support natural language querying and automated reporting capabilities.",
-                              "Established robust engineering rigor via automated data quality firewalls, end-to-end data governance, lineage tracking, and 99.9% production SLA maintenance."
+                              "Bridged large-scale cloud data platform engineering (AWS Redshift, S3, Spark) with petabyte-scale financial/telemetry data processing.",
+                              "Aligned hands-on Agentic AI and LLM orchestration (KIRO IDE, prompt pipelines) with Amazon\u0027s mandate for AI-powered analytics and automated insights.",
+                              "Integrated enterprise-grade data governance, source-to-target reconciliation firewalls, and Collibra lineage to ensure 99.9% availability and data integrity.",
+                              "Applied autonomous ML anomaly detection (95% precision) and time-series forecasting (SARIMA, XGBoost) directly applicable to Unit Economics and profit predictions."
                           ]
 }

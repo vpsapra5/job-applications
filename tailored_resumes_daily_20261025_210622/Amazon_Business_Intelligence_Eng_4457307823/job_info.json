@@ -2,11 +2,11 @@
     "company":  "Amazon",
     "role":  "Business Intelligence Engineer III, RISC - Extended Producer Responsibility (EPR)",
     "sourceUrl":  "https://www.linkedin.com/jobs/view/4457307823/",
-    "timestamp":  "2026-10-25 21:06:52",
+    "timestamp":  "2026-10-28 22:31:53",
     "synthesizedPoints":  [
-                              "Translated multi-terabyte data processing and dimensional modeling experience into scalable BI and data architecture strategies aligned with complex regulatory compliance and circular economy metrics.",
-                              "Bridged predictive modeling and statistical regression expertise (XGBoost, SARIMA, anomaly detection) to fulfill requirements for KPI calibration, cost-saving identification, and compliance health monitoring.",
-                              "Leveraged hands-on Generative AI, LLM prompting, and agentic development frameworks (KIRO IDE) to satisfy mandates for automated regulatory data extraction, classification, and reporting workflow optimization.",
-                              "Scaled executive reporting capabilities by converting complex operational telemetry into executive-facing KOM dashboards and data-driven narratives using Power BI, Tableau, and MicroStrategy."
+                              "Bridged multi-TB data platform engineering (AWS Redshift, Snowflake, PySpark) with Amazon\u0027s requirement for scalable global data infrastructure and warehousing.",
+                              "Mapped Generative AI and agentic workflow orchestration (KIRO IDE, automated classification) directly to Amazon\u0027s mandate for AI-augmented regulatory data extraction and reporting.",
+                              "Demonstrated expertise in autonomous anomaly detection, regression, and KPI calibration (95% precision) aligning with compliance health and cost optimization models.",
+                              "Translated complex transactional telemetry into executive BI dashboards and decision intelligence using Power BI and Tableau for senior leadership."
                           ]
 }

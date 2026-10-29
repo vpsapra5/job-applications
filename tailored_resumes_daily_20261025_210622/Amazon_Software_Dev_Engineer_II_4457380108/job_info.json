@@ -2,11 +2,11 @@
     "company":  "Amazon",
     "role":  "Software Dev Engineer II, Profit Intelligence",
     "sourceUrl":  "https://www.linkedin.com/jobs/view/4457380108/",
-    "timestamp":  "2026-10-25 21:07:03",
+    "timestamp":  "2026-10-28 22:32:03",
     "synthesizedPoints":  [
-                              "Mapped large-scale data pipeline engineering experience directly to Amazon\u0027s petabyte-scale Profit Intelligence requirements.",
-                              "Integrated machine learning forecasting and predictive modeling expertise to align with Amazon\u0027s demand and profit prediction systems.",
-                              "Leveraged rigorous production monitoring, RCA, and SLA management to satisfy Amazon\u0027s strict \u0027you build it, you run it\u0027 operational standards.",
-                              "Combined distributed cloud platform proficiency (AWS/Azure/Spark) with automated data quality frameworks to fulfill enterprise data governance needs."
+                              "Bridged Vipul\u0027s production experience in building petabyte-scale distributed cloud data platforms (AWS Redshift, S3, Spark) directly to Amazon\u0027s requirement for large-scale profit intelligence and data infrastructure.",
+                              "Mapped Vipul\u0027s cutting-edge work in autonomous agentic workflows (KIRO IDE) and generative AI prompt orchestration to Amazon\u0027s need for integrating LLMs and automated analytics tools.",
+                              "Highlighted proven expertise in autonomous ML anomaly detection (95% precision) and predictive classification models (XGBoost) aligned with Amazon\u0027s demand for forecasting and data mining algorithms.",
+                              "Demonstrated strong background in automated data quality, governance, and reconciliation firewalls matching Amazon\u0027s core requirement for secure, auditable, and semantically correct data pipelines."
                           ]
 }
