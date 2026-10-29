@@ -55,9 +55,16 @@ app.use('/files', express.static(__dirname));
 
 app.get('/files/*', (req, res) => {
   const relPath = decodeURIComponent(req.params[0] || '');
-  const filePath = path.join(__dirname, relPath);
-  if (fs.existsSync(filePath)) {
-    return res.sendFile(filePath);
+  const candidates = [
+    path.join(__dirname, relPath),
+    path.join(process.cwd(), relPath),
+    path.join(__dirname, '..', relPath),
+    path.join(process.cwd(), 'app', relPath)
+  ];
+  for (const p of candidates) {
+    if (fs.existsSync(p)) {
+      return res.sendFile(p);
+    }
   }
   return res.status(404).send('File not found');
 });
