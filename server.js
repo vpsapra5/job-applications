@@ -53,20 +53,24 @@ app.use(express.static(publicDir));
 // 2. Serve static generated resume files (/files/...)
 app.use('/files', express.static(__dirname));
 
-app.get('/files/*', (req, res) => {
-  const relPath = decodeURIComponent(req.params[0] || '');
-  const candidates = [
-    path.join(__dirname, relPath),
-    path.join(process.cwd(), relPath),
-    path.join(__dirname, '..', relPath),
-    path.join(process.cwd(), 'app', relPath)
-  ];
-  for (const p of candidates) {
-    if (fs.existsSync(p)) {
-      return res.sendFile(p);
+app.use((req, res, next) => {
+  const fileParam = req.query.file || (req.url.startsWith('/files/') ? req.url.slice(7) : null);
+  if (fileParam) {
+    const relPath = decodeURIComponent(fileParam.split('?')[0]);
+    const candidates = [
+      path.join(__dirname, relPath),
+      path.join(process.cwd(), relPath),
+      path.join(__dirname, '..', relPath),
+      path.join(process.cwd(), 'app', relPath)
+    ];
+    for (const p of candidates) {
+      if (fs.existsSync(p) && fs.statSync(p).isFile()) {
+        return res.sendFile(p);
+      }
     }
+    return res.status(404).send('File not found: ' + relPath);
   }
-  return res.status(404).send('File not found');
+  next();
 });
 
 // 3. API: Status
