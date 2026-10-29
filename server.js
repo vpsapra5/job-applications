@@ -68,7 +68,7 @@ app.use((req, res, next) => {
         return res.sendFile(p);
       }
     }
-    return res.status(404).send('File not found: ' + relPath);
+    return res.status(404).send('File not found: ' + relPath + ' | checked: ' + candidates.join(' , '));
   }
   next();
 });
