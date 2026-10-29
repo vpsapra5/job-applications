@@ -60,6 +60,8 @@ app.use((req, res, next) => {
     const candidates = [
       path.join(__dirname, relPath),
       path.join(process.cwd(), relPath),
+      path.join(__dirname, 'api', relPath),
+      path.join(process.cwd(), 'api', relPath),
       path.join(__dirname, '..', relPath),
       path.join(process.cwd(), 'app', relPath)
     ];
@@ -68,7 +70,9 @@ app.use((req, res, next) => {
         return res.sendFile(p);
       }
     }
-    return res.status(404).send('File not found: ' + relPath + ' | checked: ' + candidates.join(' , '));
+    const dirListing = fs.existsSync(__dirname) ? fs.readdirSync(__dirname).join(', ') : 'no-dir';
+    const apiListing = fs.existsSync(path.join(__dirname, 'api')) ? fs.readdirSync(path.join(__dirname, 'api')).join(', ') : 'no-api';
+    return res.status(404).send('File not found: ' + relPath + ' | checked: ' + candidates.join(' , ') + ' | root: ' + dirListing + ' | apiDir: ' + apiListing);
   }
   next();
 });
