@@ -1,0 +1,12 @@
+﻿{
+    "company":  "Amazon",
+    "role":  "Software Dev Engineer II, Profit Intelligence",
+    "sourceUrl":  "https://www.linkedin.com/jobs/view/4457380108/",
+    "timestamp":  "2026-10-25 21:07:03",
+    "synthesizedPoints":  [
+                              "Mapped large-scale data pipeline engineering experience directly to Amazon\u0027s petabyte-scale Profit Intelligence requirements.",
+                              "Integrated machine learning forecasting and predictive modeling expertise to align with Amazon\u0027s demand and profit prediction systems.",
+                              "Leveraged rigorous production monitoring, RCA, and SLA management to satisfy Amazon\u0027s strict \u0027you build it, you run it\u0027 operational standards.",
+                              "Combined distributed cloud platform proficiency (AWS/Azure/Spark) with automated data quality frameworks to fulfill enterprise data governance needs."
+                          ]
+}

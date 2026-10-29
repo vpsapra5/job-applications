@@ -1,0 +1,7 @@
+﻿COMPANY: JPMorganChase
+ROLE: Lead Software Engineer - Databricks/Snowflake/AWS
+URL: https://www.linkedin.com/jobs/view/4438588950/
+DATE: 2026-10-25 21:07:19
+
+--- JOB DESCRIPTION ---
+Responsibilities and technical requirements for Lead Software Engineer - Databricks/Snowflake/AWS at JPMorganChase.

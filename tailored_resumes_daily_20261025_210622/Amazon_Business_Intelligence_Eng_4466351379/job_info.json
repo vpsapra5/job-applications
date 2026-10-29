@@ -1,0 +1,12 @@
+﻿{
+    "company":  "Amazon",
+    "role":  "Business Intelligence Engineer, ISFX",
+    "sourceUrl":  "https://www.linkedin.com/jobs/view/4466351379/",
+    "timestamp":  "2026-10-25 21:06:58",
+    "synthesizedPoints":  [
+                              "Bridged large-scale data warehousing experience by mapping Charter\u0027s AWS Redshift, Snowflake, and Azure Synapse environments directly to Amazon\u0027s data infrastructure requirements.",
+                              "Aligned BI visualization expertise by highlighting enterprise-grade dashboard development in Tableau and Power BI for executive KOM tracking and operational decision-making.",
+                              "Mapped predictive modeling and scoring experience (XGBoost, Random Forests) directly to the target role\u0027s requirement for intent scoring, conversion prediction, and ML-driven prioritization models.",
+                              "Demonstrated strong ETL pipeline orchestration skills using Python, SQL, and Apache Airflow to automate reporting and scale intelligence delivery across regional operations."
+                          ]
+}

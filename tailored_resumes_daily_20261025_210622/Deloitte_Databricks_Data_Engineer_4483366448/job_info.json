@@ -1,0 +1,12 @@
+﻿{
+    "company":  "Deloitte",
+    "role":  "Databricks Data Engineer",
+    "sourceUrl":  "https://www.linkedin.com/jobs/view/4483366448/",
+    "timestamp":  "2026-10-25 21:07:17",
+    "synthesizedPoints":  [
+                              "Mapped Vipul\u0027s high-throughput data processing and cloud data architecture experience at Charter directly to Deloitte\u0027s Databricks Data Engineer requirements for modernizing enterprise platforms.",
+                              "Integrated his hands-on background in Apache Spark, PySpark, Python, and SQL with the target role\u0027s core technical stack for building scalable data pipelines.",
+                              "Bridged his experience in implementing dimensional models, Star/Snowflake schemas, and SCD patterns to satisfy Deloitte\u0027s need for advanced data integration and data modeling practices.",
+                              "Highlighted his success in deploying automated data quality audit frameworks and ML-driven data reliability systems to fulfill client-facing delivery expectations for data governance and platform performance."
+                          ]
+}
