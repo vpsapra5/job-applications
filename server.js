@@ -74,6 +74,25 @@ app.use((req, res, next) => {
 });
 
 // 3. API: Status
+app.get('/api/debug-files', (req, res) => {
+  try {
+    const rootFiles = fs.readdirSync(__dirname);
+    const cwdFiles = fs.readdirSync(process.cwd());
+    const dailyExists = fs.existsSync(path.join(__dirname, 'tailored_resumes_daily_20261025_210622'));
+    const dailyCwdExists = fs.existsSync(path.join(process.cwd(), 'tailored_resumes_daily_20261025_210622'));
+    res.json({
+      __dirname,
+      processCwd: process.cwd(),
+      rootFiles,
+      cwdFiles,
+      dailyExists,
+      dailyCwdExists
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.get('/api/status', (req, res) => {
   const indiaDocx = path.join(__dirname, 'original resume', 'India', 'VipulSapra_Resume.docx');
   const indiaPdf  = path.join(__dirname, 'original resume', 'India', 'VipulSapra_Resume.pdf');
