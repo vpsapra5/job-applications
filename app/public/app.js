@@ -481,7 +481,7 @@ async function loadArchiveHistory() {
 
       tr.innerHTML = `
         <td>
-          <div style="font-weight:600; color:#fff;">${escapeHtml(item.company)}</div>
+          <div style="font-weight:600; color:var(--text-main);">${escapeHtml(item.company)}</div>
           <div style="font-size:0.8rem; color:var(--text-muted);">${escapeHtml(item.role)}</div>
         </td>
         <td><div style="display:flex; flex-wrap:wrap; gap:4px;">${gaps}</div></td>
