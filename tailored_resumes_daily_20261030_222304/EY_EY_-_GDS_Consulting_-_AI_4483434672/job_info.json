@@ -1,0 +1,12 @@
+﻿{
+    "company":  "EY",
+    "role":  "EY - GDS Consulting - AI And DATA -AWS Data Engineer - Manager",
+    "sourceUrl":  "https://www.linkedin.com/jobs/view/4483434672/",
+    "timestamp":  "2026-10-30 22:24:10",
+    "synthesizedPoints":  [
+                              "Bridged enterprise cloud data engineering (AWS/Azure/Snowflake/PySpark) with advanced AWS platform operations and distributed pipeline development.",
+                              "Integrated modern Generative AI and autonomous agentic workflows (KIRO IDE, prompt orchestration) to automate data discovery, schema drift detection, and code migration.",
+                              "Implemented robust data governance, lineage (Collibra), and automated reconciliation firewalls to guarantee 99.9% data reliability and pipeline integrity.",
+                              "Combined scalable machine learning (XGBoost, SARIMA) with executive decision intelligence (Power BI, Tableau) to drive quantifiable business and operational impact."
+                          ]
+}

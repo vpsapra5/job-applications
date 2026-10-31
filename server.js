@@ -162,7 +162,7 @@ app.get('/api/config', (req, res) => {
   const cfgPath = path.join(__dirname, 'app', 'config.json');
   const cfg = readJson(cfgPath, {});
   res.json({
-    dailyNotificationTime: cfg.dailyNotificationTime || "20:00",
+    dailyNotificationTime: cfg.dailyNotificationTime || "06:00",
     targetCountIndia: cfg.targetCountIndia || 5,
     targetCountUs: cfg.targetCountUs || 5
   });
@@ -173,12 +173,12 @@ app.post('/api/notify-test', (req, res) => {
   res.json({ status: 'sent', message: 'Notification triggered.' });
 });
 
-// 8. API: Vercel Cron Endpoint (8:00 PM Daily)
+// 8. API: Vercel Cron Endpoint (6:00 AM EST Daily)
 app.get('/api/cron', (req, res) => {
-  console.log('[Vercel Cron Triggered at 8:00 PM]');
+  console.log('[Vercel Cron Triggered at 6:00 AM EST]');
   res.json({
     status: 'success',
-    message: 'Daily 8 PM cron executed successfully.',
+    message: 'Daily 6 AM EST cron executed successfully.',
     timestamp: new Date().toISOString()
   });
 });

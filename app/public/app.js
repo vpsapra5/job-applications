@@ -420,7 +420,7 @@ elBtnTestNotify.addEventListener('click', async () => {
   try {
     const res = await fetch('/api/notify-test', { method: 'POST' });
     const data = await res.json();
-    showToast("🔔 8:00 PM alert test triggered! (Check Windows notifications)");
+    showToast("🔔 6:00 AM EST alert test triggered! (Check Windows notifications)");
 
     if ('Notification' in window && Notification.permission === 'granted') {
       new Notification("Resume Tailor Studio", {

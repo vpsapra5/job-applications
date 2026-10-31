@@ -1,0 +1,12 @@
+﻿{
+    "company":  "Cisco",
+    "role":  "Senior Data Engineer – Apache Spark | Kafka | Flink | Trino | Iceberg | Big Data | Streaming | Data Platform 8–12 Years",
+    "sourceUrl":  "https://www.linkedin.com/jobs/view/4485387071/",
+    "timestamp":  "2026-10-30 22:23:51",
+    "synthesizedPoints":  [
+                              "Bridged enterprise big data platforms with distributed processing frameworks like Apache Spark and cloud lakehouse environments to handle high-throughput analytical workloads.",
+                              "Combined foundational data pipeline engineering with cutting-edge AI tools (GitHub Copilot, KIRO IDE, automated prompt orchestration) for optimized debugging and code development.",
+                              "Integrated automated data quality, schema validation, and drift detection mechanisms to ensure uncompromised data integrity across large-scale data platforms.",
+                              "Translated complex operational telemetry into high-performance executive analytics and optimized data models tailored for high-volume enterprise systems."
+                          ]
+}

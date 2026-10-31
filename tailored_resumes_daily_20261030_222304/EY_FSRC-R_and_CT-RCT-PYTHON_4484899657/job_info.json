@@ -1,0 +1,12 @@
+﻿{
+    "company":  "EY",
+    "role":  "FSRC-R and CT-RCT-PYTHON and SQL-STAFF",
+    "sourceUrl":  "https://www.linkedin.com/jobs/view/4484899657/",
+    "timestamp":  "2026-10-30 22:24:04",
+    "synthesizedPoints":  [
+                              "Bridged heavy Python and advanced SQL development requirements by detailing complex data extraction, transformation, reconciliation, and profiling pipelines built at Charter Communications.",
+                              "Demonstrated extensive hands-on cloud experience across Azure and AWS, fulfilling the mandatory cloud requirement for scalable data-driven applications.",
+                              "Mapped high-throughput anomaly detection, automated data quality firewalls, and data governance frameworks directly to financial crime compliance, risk mitigation, and transaction monitoring needs.",
+                              "Integrated agile software engineering practices, unit testing, CI/CD, and cross-functional stakeholder collaboration to ensure production-ready, secure, and maintainable code delivery."
+                          ]
+}

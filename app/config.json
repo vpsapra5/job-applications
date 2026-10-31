@@ -1,10 +1,10 @@
-﻿{
+{
     "indiaSearchUrl":  "https://www.linkedin.com/jobs/search-results/?currentJobId=4465832408\u0026keywords=analyst%20%7C%7C%20etl%20developer%20%7C%7C%20data%20scientist%20%7C%7C%20bi%20analyst%20%7C%7C%20data%20engineer\u0026origin=SEMANTIC_SEARCH_HISTORY\u0026geoId=102713980\u0026distance=0.0\u0026f_TPR=r86400\u0026f_C=1073%2C1038%2C11448%2C1586%2C1382%2C1426%2C1123%2C2490%2C1035%2C1068%2C1277%2C3015%2C2534%2C1103%2C1441%2C1063%2C2135371%2C2190%2C162479%2C2378%2C2857634%2C10173825%2C10667%2C1371%2C1052%2C165158%2C1815218",
     "usSearchUrl":  "https://www.linkedin.com/jobs/search-results/?currentJobId=4457319874\u0026keywords=analyst%20%7C%7C%20etl%20developer%20%7C%7C%20data%20scientist%20%7C%7C%20bi%20analyst%20%7C%7C%20data%20engineer\u0026origin=JOB_SEARCH_PAGE_LOCATION_AUTOCOMPLETE\u0026geoId=103644278\u0026f_TPR=r86400\u0026f_C=1073%2C1038%2C11448%2C1586%2C1382%2C1426%2C1123%2C2490%2C1035%2C1068%2C1277%2C3015%2C2534%2C1103%2C1441%2C1063%2C2135371%2C2190%2C162479%2C2378%2C2857634%2C10173825%2C10667%2C1371%2C1052%2C165158%2C1815218",
     "indiaJobsCount":  5,
     "usJobsCount":  5,
-    "dailyNotificationTime":  "20:00",
+    "dailyNotificationTime":  "06:00",
     "notificationEnabled":  true,
-    "lastDailyRunDate":  "2026-10-25",
-    "scheduledTaskName":  "ResumeTailorStudioDaily8PM"
+    "lastDailyRunDate":  "2026-10-30",
+    "scheduledTaskName":  "ResumeTailorStudioDaily6AM"
 }

@@ -1,0 +1,12 @@
+﻿{
+    "company":  "Deloitte",
+    "role":  "Senior Snowflake Forward Deployed Engineer - GPS",
+    "sourceUrl":  "https://www.linkedin.com/jobs/view/4421335347/",
+    "timestamp":  "2026-10-30 22:25:05",
+    "synthesizedPoints":  [
+                              "Bridged enterprise data systems with cutting-edge GenAI and agentic workflows using KIRO IDE and automated prompt orchestration, directly fulfilling Deloitte\u0027s requirement for rapid prototyping and delivery of AI-enabled solutions.",
+                              "Demonstrated extensive hands-on expertise with Snowflake and high-throughput cloud lakehouses (Azure Databricks, AWS Redshift) processing hundreds of terabytes with 99.9% availability SLAs.",
+                              "Proven track record of embedding with cross-functional teams and senior stakeholders to translate complex business needs into high-value AI use cases, matching the FDE client engagement model.",
+                              "Combined advanced machine learning engineering (XGBoost, SARIMA, 95% precision anomaly detection) with robust data governance and semantic modeling to drive measurable business impact."
+                          ]
+}

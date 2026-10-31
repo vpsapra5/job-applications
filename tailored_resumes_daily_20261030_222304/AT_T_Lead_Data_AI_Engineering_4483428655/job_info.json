@@ -1,0 +1,12 @@
+﻿{
+    "company":  "AT\u0026T",
+    "role":  "Lead Data/AI Engineering",
+    "sourceUrl":  "https://www.linkedin.com/jobs/view/4483428655/",
+    "timestamp":  "2026-10-30 22:24:53",
+    "synthesizedPoints":  [
+                              "Bridged Vipul\u0027s extensive Databricks and cloud ecosystem background directly to AT\u0026T\u0027s requirement for production-grade Databricks application development and Azure/Snowflake integration.",
+                              "Highlighted hands-on AI engineering and MLOps capabilities, mapping his autonomous anomaly detection, predictive ML, and agentic workflows to enterprise AI reliability standards.",
+                              "Demonstrated robust data pipeline and ETL architecture experience using Spark, PySpark, ADF, and Snowflake to support high-throughput analytics and AI workloads.",
+                              "Emphasized strong foundational proficiency in Python, SQL, and HTML alongside enterprise cross-functional collaboration and governance experience."
+                          ]
+}

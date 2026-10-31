@@ -1,0 +1,12 @@
+﻿{
+    "company":  "Cisco",
+    "role":  "Data Engineering Technical Leader - CX AI",
+    "sourceUrl":  "https://www.linkedin.com/jobs/view/4485384408/",
+    "timestamp":  "2026-10-30 22:24:27",
+    "synthesizedPoints":  [
+                              "Bridged enterprise cloud data platform engineering (Databricks, Snowflake, Azure/AWS) with advanced lakehouse architectures to power real-time CX analytics and AI readiness.",
+                              "Demonstrated hands-on expertise in Agentic AI and AI-assisted development (KIRO IDE, Copilot) to accelerate delivery velocity by 40-50% while ensuring robust CI/CD automation.",
+                              "Engineered autonomous ML anomaly detection frameworks with 95% precision alongside automated source-to-target reconciliation firewalls for enterprise-grade data observability.",
+                              "Successfully aligned technical execution with strategic business priorities by translating complex telemetry into executive semantic models, KOM dashboards, and predictive intelligence."
+                          ]
+}

@@ -1,0 +1,12 @@
+﻿{
+    "company":  "EY",
+    "role":  "Risk Analytics - SQL and ETL Developer - Staff",
+    "sourceUrl":  "https://www.linkedin.com/jobs/view/4484875741/",
+    "timestamp":  "2026-10-30 22:23:58",
+    "synthesizedPoints":  [
+                              "Bridged heavy enterprise SQL development and database optimization requirements with advanced query tuning, execution plan analysis, and complex data modeling (Star/Snowflake schemas, SCD Type 1/2).",
+                              "Aligned large-scale ETL/ELT pipeline engineering expertise across Azure Data Factory, Databricks, Synapse, and Snowflake with EY\u0027s demand for robust data integration and batch processing solutions.",
+                              "Integrated modern AI-assisted engineering and automated anomaly detection (95% precision) to enhance data quality, governance, and reconciliation workflows.",
+                              "Combined a strong foundation in relational database management, data validation, and BI decision intelligence with scalable cloud data architectures to deliver high-performance risk and analytics solutions."
+                          ]
+}
